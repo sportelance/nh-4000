@@ -16,8 +16,10 @@ class NH4000Map {
         this.initializeElements();
         this.loadMountains();
         this.setupEventListeners();
-        this.renderMountains();
-        this.updateTransform();
+        this.initializeInfoPanel();
+        
+        // Wait for image to load before rendering mountains
+        this.initializeMap();
     }
 
     initializeElements() {
@@ -63,7 +65,7 @@ class NH4000Map {
         this.mapWrapper.addEventListener('wheel', (e) => this.handleWheelZoom(e));
         
         // Double-click to add new mountain (desktop)
-        this.mapWrapper.addEventListener('dblclick', (e) => this.handleDoubleClick(e));
+        // this.mapWrapper.addEventListener('dblclick', (e) => this.handleDoubleClick(e));
         
         // Enhanced touch handling for mobile
         this.setupTouchHandling();
@@ -447,10 +449,17 @@ class NH4000Map {
     openHikeModal(mountainId = null, hikeIndex = null) {
         this.editingHikeId = hikeIndex;
         
+        // Get mountain name field and label
+        const mountainNameField = document.getElementById('mountain-name');
+        const mountainNameLabel = document.querySelector('label[for="mountain-name"]');
+        const mountainNameContainer = mountainNameLabel.parentElement;
+        
         if (mountainId) {
             this.currentMountain = this.mountains.get(mountainId);
-            this.mountainNameInput.value = this.currentMountain.name;
-            this.mountainNameInput.disabled = true;
+            
+            // Hide mountain name field when adding/editing hikes for existing mountains
+            mountainNameContainer.style.display = 'none';
+            this.mountainNameInput.removeAttribute('required');
             
             if (hikeIndex !== null) {
                 const hike = this.currentMountain.hikes[hikeIndex];
@@ -464,7 +473,10 @@ class NH4000Map {
                 document.getElementById('modal-title').textContent = 'Add Hike';
             }
         } else {
+            // Show mountain name field when creating new mountains
+            mountainNameContainer.style.display = 'block';
             this.mountainNameInput.disabled = false;
+            this.mountainNameInput.setAttribute('required', 'required');
             this.clearHikeForm();
             document.getElementById('modal-title').textContent = 'Add New Mountain';
         }
@@ -500,21 +512,9 @@ class NH4000Map {
                 latestCustomMountain.name = mountainName;
                 this.currentMountain = latestCustomMountain;
             }
-        } else {
-            // Check if we're editing an existing mountain
-            const mountainName = this.mountainNameInput.value.trim();
-            if (!mountainName) {
-                alert('Please enter a mountain name');
-                return;
-            }
-            
-            // Update mountain name if it changed
-            if (this.currentMountain.name !== mountainName) {
-                this.currentMountain.name = mountainName;
-                this.saveMountains();
-                this.renderMountains();
-            }
         }
+        // Note: When adding/editing hikes for existing mountains, 
+        // this.currentMountain is already set and mountain ID is automatically included
         
         const hikeData = {
             mountainId: this.currentMountain.id,
@@ -852,12 +852,61 @@ class NH4000Map {
     hideInfoPanel() {
         console.log('hideInfoPanel');
         const infoPanel = document.getElementById('info-panel');
-        infoPanel.classList.add('hidden');
+        const closeButton = document.getElementById('close-panel');
+        
+        closeButton.style.visibility = 'hidden';
+        
+        // Save to localStorage that user has dismissed the info panel
+        localStorage.setItem('nh4000_info_dismissed', 'true');
+    }
+
+    showInfoPanel() {
+        console.log('showInfoPanel');
+        const infoPanel = document.getElementById('info-panel');
+        const closeButton = document.getElementById('close-panel');
+        
+        closeButton.style.visibility = 'visible';
     }
 
     showInfoPanel() {
         const infoPanel = document.getElementById('info-panel');
         infoPanel.classList.remove('hidden');
+    }
+
+    shouldShowInfoPanel() {
+        return localStorage.getItem('nh4000_info_dismissed') !== 'true';
+    }
+
+    initializeInfoPanel() {
+        if (this.shouldShowInfoPanel()) {
+            this.showInfoPanel();
+        } else {
+            // If info panel should be hidden, also hide the close button
+            const closeButton = document.getElementById('close-panel');
+            closeButton.style.display = 'none';
+        }
+    }
+
+    initializeMap() {
+        // Check if image is already loaded
+        if (this.mapImage.complete && this.mapImage.naturalHeight !== 0) {
+            this.renderMountains();
+            this.updateTransform();
+        } else {
+            // Wait for image to load
+            this.mapImage.addEventListener('load', () => {
+                this.renderMountains();
+                this.updateTransform();
+            });
+            
+            // Fallback in case load event doesn't fire
+            setTimeout(() => {
+                if (this.mapImage.complete) {
+                    this.renderMountains();
+                    this.updateTransform();
+                }
+            }, 1000);
+        }
     }
 
     setupSwipeToDismiss() {
