@@ -70,9 +70,6 @@ class NH4000Map {
         // Double-click to add new mountain (desktop)
         this.mapWrapper.addEventListener('dblclick', (e) => this.handleDoubleClick(e));
         
-        // Long-press to add new mountain (mobile)
-        this.setupLongPressToAddMountain();
-        
         // Touch zoom for mobile
         this.mapWrapper.addEventListener('gesturestart', (e) => this.handleGestureStart(e));
         this.mapWrapper.addEventListener('gesturechange', (e) => this.handleGestureChange(e));
@@ -608,81 +605,6 @@ class NH4000Map {
             document.body.removeChild(feedback);
         }, 600);
     }
-
-    // Setup long-press to add mountain on mobile
-    setupLongPressToAddMountain() {
-        let longPressTimer = null;
-        let longPressStartX = 0;
-        let longPressStartY = 0;
-        let hasMoved = false;
-        const longPressDuration = 800; // 800ms for long press
-
-        // Use a separate touch handler that doesn't interfere with drag
-        const longPressTouchStart = (e) => {
-            if (e.target.closest('.mountain-pin')) return;
-            
-            const touch = e.touches[0];
-            longPressStartX = touch.clientX;
-            longPressStartY = touch.clientY;
-            hasMoved = false;
-            
-            longPressTimer = setTimeout(() => {
-                if (!hasMoved && !this.isDragging) {
-                    this.handleLongPress(touch.clientX, touch.clientY);
-                }
-            }, longPressDuration);
-        };
-
-        const longPressTouchMove = (e) => {
-            if (longPressTimer) {
-                const touch = e.touches[0];
-                const deltaX = Math.abs(touch.clientX - longPressStartX);
-                const deltaY = Math.abs(touch.clientY - longPressStartY);
-                
-                // Cancel long press if finger moved too much
-                if (deltaX > 10 || deltaY > 10) {
-                    hasMoved = true;
-                    clearTimeout(longPressTimer);
-                    longPressTimer = null;
-                }
-            }
-        };
-
-        const longPressTouchEnd = () => {
-            if (longPressTimer) {
-                clearTimeout(longPressTimer);
-                longPressTimer = null;
-            }
-            hasMoved = false;
-        };
-
-        // Add event listeners with passive: false to prevent conflicts
-        this.mapWrapper.addEventListener('touchstart', longPressTouchStart, { passive: false });
-        this.mapWrapper.addEventListener('touchmove', longPressTouchMove, { passive: false });
-        this.mapWrapper.addEventListener('touchend', longPressTouchEnd, { passive: false });
-        this.mapWrapper.addEventListener('touchcancel', longPressTouchEnd, { passive: false });
-    }
-
-    // Handle long-press to add new mountain
-    handleLongPress(x, y) {
-        console.log('handleLongPress', x, y);
-        const rect = this.mapWrapper.getBoundingClientRect();
-        const mapX = ((x - rect.left) / rect.width) * 100;
-        const mapY = ((y - rect.top) / rect.height) * 100;
-        
-        // Check if location is already occupied
-        if (this.isLocationOccupied(mapX, mapY)) {
-            alert('This location is too close to an existing mountain. Please choose a different location.');
-            return;
-        }
-        
-        // Add visual feedback
-        this.showClickFeedback(x, y);
-        
-        this.addNewMountain(mapX, mapY);
-    }
-
-
 
     // Zoom and pan functionality
     zoomIn() {
