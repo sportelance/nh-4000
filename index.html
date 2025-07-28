@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NH 4000 Footers Tracker</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .container {
+            text-align: center;
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: 2rem;
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+            font-size: 2.5rem;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 2rem;
+            font-size: 1.2rem;
+        }
+        
+        .map-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #3498db, #2980b9);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.3);
+        }
+        
+        .map-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.4);
+        }
+        
+        .stats {
+            margin-top: 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+        }
+        
+        .stat {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏔️ NH 4000 Footers</h1>
+        <p class="subtitle">Track your adventures on New Hampshire's highest peaks</p>
+        
+        <a href="map/map.html" class="map-link">🗺️ View Interactive Map</a>
+        
+        <div class="stats">
+            <div class="stat">
+                <div class="stat-number" id="total-mountains">48</div>
+                <div class="stat-label">Total Mountains</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="completed-hikes">0</div>
+                <div class="stat-label">Completed Hikes</div>
+            </div>
+            <div class="stat">
+                <div class="stat-number" id="pending-hikes">48</div>
+                <div class="stat-label">Pending Hikes</div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // This will be used later to load stats from localStorage or database
+        function updateStats() {
+            const hikes = JSON.parse(localStorage.getItem('nh4000_hikes') || '[]');
+            const completed = hikes.filter(hike => hike.completed).length;
+            const total = 48; // NH has 48 4000 footers
+            
+            document.getElementById('completed-hikes').textContent = completed;
+            document.getElementById('pending-hikes').textContent = total - completed;
+        }
+        
+        // Update stats on page load
+        updateStats();
+    </script>
+</body>
+</html> 

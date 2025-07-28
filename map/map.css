@@ -1,0 +1,537 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: #1a1a1a;
+    overflow: hidden;
+    height: 100vh;
+}
+
+.map-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.map-controls {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.control-btn {
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 18px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.control-btn:hover {
+    background: white;
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.map-wrapper {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+    min-height: 0;
+    min-width: 0;
+    touch-action: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+.map-wrapper:active {
+    cursor: grabbing;
+}
+
+.map-background {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-origin: center center;
+    overflow: hidden;
+    min-height: 0;
+    min-width: 0;
+    will-change: transform;
+}
+
+#map-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    user-select: none;
+    -webkit-user-drag: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #f0f0f0;
+}
+
+#mountain-pins {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+}
+
+.mountain-pin {
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    transform-origin: center bottom;
+}
+
+.mountain-pin:hover {
+    transform: scale(1.2);
+    z-index: 100;
+}
+
+.mountain-pin.completed {
+    color: #27ae60;
+}
+
+.mountain-pin.pending {
+    color: #e74c3c;
+}
+
+.mountain-pin .triangle {
+    position: relative;
+    width: 0;
+    height: 0;
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 12px solid currentColor;
+    margin: 0 auto;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.mountain-pin .label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 4px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    z-index: 10;
+    max-width: 12px;
+    overflow: hidden;
+}
+
+.info-panel {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-height: 400px;
+    overflow-y: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateX(0);
+}
+
+.info-panel.hidden {
+    transform: translateX(100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+.info-panel h3 {
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+
+.alert {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.alert p {
+    margin: 0 0 10px 0;
+    color: #856404;
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+.close-panel {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #666;
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-panel:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.alert.hidden {
+    display: none;
+}
+
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 5% auto;
+    padding: 30px;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+    position: relative;
+    animation: modalSlideIn 0.3s ease;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes clickFeedback {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(2);
+        opacity: 0;
+    }
+}
+
+
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s ease;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #e0e0e0;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s ease;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #3498db;
+}
+
+.form-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.form-actions,
+.modal-actions {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.btn-primary,
+.btn-secondary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #2980b9;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #95a5a6;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background: #7f8c8d;
+}
+
+/* Hike list styles */
+.hike-entry {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.hike-entry.completed {
+    border-left: 4px solid #27ae60;
+}
+
+.hike-entry.pending {
+    border-left: 4px solid #e74c3c;
+}
+
+.hike-entry h4 {
+    margin-bottom: 8px;
+    color: #2c3e50;
+}
+
+.hike-entry .hike-date {
+    color: #7f8c8d;
+    font-size: 12px;
+    margin-bottom: 5px;
+}
+
+.hike-entry .hike-companions {
+    color: #34495e;
+    font-size: 13px;
+    margin-bottom: 5px;
+}
+
+.hike-entry .hike-notes {
+    color: #555;
+    font-size: 13px;
+    font-style: italic;
+}
+
+.hike-entry .hike-actions {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    gap: 5px;
+}
+
+.hike-entry .edit-btn,
+.hike-entry .delete-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.hike-entry .edit-btn:hover {
+    background: #3498db;
+    color: white;
+}
+
+.hike-entry .delete-btn:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+/* Mountain title with actions */
+.mountain-title-with-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.mountain-items-spacer {
+    width: 20px;
+}
+
+.mountain-actions {
+    display: flex;
+    gap: 5px;
+    margin-left: auto;
+}
+
+.edit-mountain-btn,
+.delete-mountain-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    padding: 5px;
+    border-radius: 3px;
+    transition: background 0.3s ease;
+}
+
+.edit-mountain-btn:hover {
+    background: #3498db;
+    color: white;
+}
+
+.delete-mountain-btn:hover {
+    background: #e74c3c;
+    color: white;
+}
+
+.mountain-elevation {
+    color: #666;
+    font-size: 0.9em;
+    font-weight: normal;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .info-panel {
+        width: 250px;
+        right: 10px;
+        top: 10px;
+    }
+    
+    .modal-content {
+        margin: 10% auto;
+        width: 95%;
+        padding: 20px;
+    }
+    
+    .map-controls {
+        top: 10px;
+        left: 10px;
+    }
+    
+    .control-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 16px;
+    }
+}
+
+/* Zoom level responsive styles */
+.map-background[data-zoom="1"] .mountain-pin .label {
+    font-size: 6px;
+    max-width: 12px;
+}
+
+.map-background[data-zoom="2"] .mountain-pin .label {
+    font-size: 8px;
+    max-width: 24px;
+}
+
+.map-background[data-zoom="3"] .mountain-pin .label {
+    font-size: 10px;
+    max-width: 36px;
+}
+
+.map-background[data-zoom="4"] .mountain-pin .label {
+    font-size: 12px;
+    max-width: 48px;
+}
+
+.map-background[data-zoom="5"] .mountain-pin .label {
+    font-size: 14px;
+    max-width: 60px;
+}
+
+.map-background[data-zoom="6"] .mountain-pin .label {
+    font-size: 8px;
+    max-width: 80px;
+}
+
+.map-background[data-zoom="7"] .mountain-pin .label {
+    font-size: 8px;
+    max-width: 60px;
+}
+
+.map-background[data-zoom="8"] .mountain-pin .label {
+    font-size: 8px;
+    max-width: 40px;
+} 

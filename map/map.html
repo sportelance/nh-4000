@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NH 4000 Footers Map</title>
+    <link rel="stylesheet" href="map.css">
+</head>
+<body>
+    <div class="map-container">
+        <div class="map-controls">
+            <button id="zoom-in" class="control-btn">🔍+</button>
+            <button id="zoom-out" class="control-btn">🔍-</button>
+            <button id="reset-zoom" class="control-btn">🏠</button>
+            <button id="add-mountain" class="control-btn">➕</button>
+        </div>
+        
+        <div class="map-wrapper">
+            <div class="map-background">
+                <img src="../images/relief_map_cropped.jpg" alt="NH Relief Map" id="map-image">
+                <div id="mountain-pins"></div>
+            </div>
+        </div>
+        
+        <div class="info-panel" id="info-panel">
+            <button class="close-panel" id="close-panel">×</button>
+            <h3>Mountain Info</h3>
+            <div id="mountain-info">
+                <p>Click on mountain pins to view details and manage hikes</p>
+                <p>Double-click (desktop) or long-press (mobile) on empty areas to add new mountains</p>
+                <p>Use the map controls to zoom and pan</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for adding/editing hikes -->
+    <div id="hike-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modal-title">Add Hike</h2>
+            
+            <form id="hike-form">
+                <div class="form-group">
+                    <label for="mountain-name">Mountain Name:</label>
+                    <input type="text" id="mountain-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="hike-date">Date:</label>
+                    <input type="date" id="hike-date">
+                </div>
+                
+                <div class="form-group">
+                    <label for="hike-companions">Companions:</label>
+                    <input type="text" id="hike-companions" placeholder="Who was with you?">
+                </div>
+                
+                <div class="form-group">
+                    <label for="hike-notes">Notes:</label>
+                    <textarea id="hike-notes" rows="3" placeholder="Any notes about the hike..."></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="hike-completed"> Completed this hike
+                    </label>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn-primary">Save Hike</button>
+                    <button type="button" class="btn-secondary" id="cancel-hike">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for viewing mountain details -->
+    <div id="details-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="details-title">Mountain Details</h2>
+            
+            <div id="hike-list">
+                <!-- Hike entries will be populated here -->
+            </div>
+            
+            <div class="modal-actions">
+                <button id="add-new-hike" class="btn-primary">Add New Hike</button>
+                <button id="close-details" class="btn-secondary">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="map.js"></script>
+</body>
+</html> 
