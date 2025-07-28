@@ -1,4 +1,4 @@
-# NH 4000-Footers Database Schema
+    # NH 4000-Footers Database Schema
 
 ## Overview
 This document outlines the current data structures used in the NH 4000-Footers tracker application. These structures are currently stored in localStorage but are designed to be easily migrated to a database system.

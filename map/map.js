@@ -59,18 +59,16 @@ class NH4000Map {
         this.mapWrapper.addEventListener('mouseup', () => this.endDrag());
         this.mapWrapper.addEventListener('mouseleave', () => this.endDrag());
         
-        // Map interactions (touch)
-        this.mapWrapper.addEventListener('touchstart', (e) => this.startTouchDrag(e));
-        this.mapWrapper.addEventListener('touchmove', (e) => this.touchDrag(e));
-        this.mapWrapper.addEventListener('touchend', () => this.endTouchDrag());
-        
         // Wheel zoom
         this.mapWrapper.addEventListener('wheel', (e) => this.handleWheelZoom(e));
         
         // Double-click to add new mountain (desktop)
         this.mapWrapper.addEventListener('dblclick', (e) => this.handleDoubleClick(e));
         
-        // Touch zoom for mobile
+        // Enhanced touch handling for mobile
+        this.setupTouchHandling();
+        
+        // Touch zoom for mobile (Safari)
         this.mapWrapper.addEventListener('gesturestart', (e) => this.handleGestureStart(e));
         this.mapWrapper.addEventListener('gesturechange', (e) => this.handleGestureChange(e));
         this.mapWrapper.addEventListener('gestureend', (e) => this.handleGestureEnd(e));
@@ -108,6 +106,97 @@ class NH4000Map {
 
         // Swipe to dismiss info panel
         this.setupSwipeToDismiss();
+    }
+
+    setupTouchHandling() {
+        let touchStartTime = 0;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let isPanning = false;
+        let isZooming = false;
+        let initialDistance = 0;
+        let initialZoom = 1;
+
+        this.mapWrapper.addEventListener('touchstart', (e) => {
+            if (e.target.closest('.mountain-pin')) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const touches = e.touches;
+            touchStartTime = Date.now();
+            touchStartX = touches[0].clientX;
+            touchStartY = touches[0].clientY;
+            
+            // Check if it's a multi-touch (pinch to zoom)
+            if (touches.length === 2) {
+                isZooming = true;
+                isPanning = false;
+                initialDistance = Math.hypot(
+                    touches[1].clientX - touches[0].clientX,
+                    touches[1].clientY - touches[0].clientY
+                );
+                initialZoom = this.zoomLevel;
+            } else if (touches.length === 1) {
+                isPanning = true;
+                isZooming = false;
+                this.startTouchDrag(e);
+            }
+        }, { passive: false });
+
+        this.mapWrapper.addEventListener('touchmove', (e) => {
+            if (e.target.closest('.mountain-pin')) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const touches = e.touches;
+            
+            if (isZooming && touches.length === 2) {
+                // Handle pinch to zoom
+                const currentDistance = Math.hypot(
+                    touches[1].clientX - touches[0].clientX,
+                    touches[1].clientY - touches[0].clientY
+                );
+                
+                const scale = currentDistance / initialDistance;
+                const newZoom = Math.max(0.5, Math.min(8, initialZoom * scale));
+                
+                if (Math.abs(newZoom - this.zoomLevel) > 0.1) {
+                    this.zoomLevel = newZoom;
+                    this.updateTransform();
+                }
+            } else if (isPanning && touches.length === 1) {
+                // Handle panning
+                this.touchDrag(e);
+            }
+        }, { passive: false });
+
+        this.mapWrapper.addEventListener('touchend', (e) => {
+            if (e.target.closest('.mountain-pin')) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const touchEndTime = Date.now();
+            const touchDuration = touchEndTime - touchStartTime;
+            
+            // Check for long press (for adding mountains)
+            if (touchDuration > 800 && !isPanning && !isZooming) {
+                const touch = e.changedTouches[0];
+                this.handleLongPress(touch.clientX, touch.clientY);
+            }
+            
+            isPanning = false;
+            isZooming = false;
+            this.endTouchDrag();
+        }, { passive: false });
+
+        this.mapWrapper.addEventListener('touchcancel', (e) => {
+            isPanning = false;
+            isZooming = false;
+            this.endTouchDrag();
+        }, { passive: false });
     }
 
     loadMountains() {
