@@ -471,27 +471,99 @@ body {
 
 /* Responsive design */
 @media (max-width: 768px) {
+    body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .map-container {
+        height: 100vh;
+        width: 100vw;
+        position: fixed;
+        top: 0;
+        left: 0;
+        overflow: hidden;
+    }
+    
+    .map-wrapper {
+        height: 100vh;
+        width: 100vw;
+        position: relative;
+        overflow: hidden;
+        touch-action: none;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .map-background {
+        width: 100%;
+        height: 100%;
+        position: relative;
+        overflow: hidden;
+        touch-action: none;
+    }
+    
     .info-panel {
-        width: 250px;
-        right: 10px;
-        top: 10px;
+        position: fixed;
+        bottom: env(safe-area-inset-bottom, 20px);
+        left: env(safe-area-inset-left, 20px);
+        right: env(safe-area-inset-right, 20px);
+        width: auto;
+        max-width: none;
+        z-index: 1000;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
     
     .modal-content {
-        margin: 10% auto;
-        width: 95%;
+        margin: 20px auto;
+        width: 90%;
+        max-width: 400px;
         padding: 20px;
+        border-radius: 12px;
     }
     
     .map-controls {
-        top: 10px;
-        left: 10px;
+        position: fixed;
+        top: env(safe-area-inset-top, 10px);
+        right: env(safe-area-inset-right, 10px);
+        z-index: 1000;
     }
     
     .control-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 16px;
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+        margin: 4px;
+        border-radius: 50%;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    
+    /* Prevent map from getting stuck behind browser UI */
+    .map-wrapper::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: -1;
+    }
+}
+
+/* iOS Safari specific fixes */
+@supports (-webkit-touch-callout: none) {
+    .map-container {
+        height: -webkit-fill-available;
+    }
+    
+    .map-wrapper {
+        height: -webkit-fill-available;
     }
 }
 

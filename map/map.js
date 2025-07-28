@@ -51,7 +51,7 @@ class NH4000Map {
         this.zoomInBtn.addEventListener('click', () => this.zoomIn());
         this.zoomOutBtn.addEventListener('click', () => this.zoomOut());
         this.resetZoomBtn.addEventListener('click', () => this.resetZoom());
-        this.addMountainBtn.addEventListener('click', () => this.enableAddMountainMode());
+        // this.addMountainBtn.addEventListener('click', () => this.enableAddMountainMode());
         
         // Map interactions (mouse)
         this.mapWrapper.addEventListener('mousedown', (e) => this.startDrag(e));
@@ -502,26 +502,26 @@ class NH4000Map {
         }
     }
 
-    enableAddMountainMode() {
-        this.addMountainBtn.textContent = '📍';
-        this.addMountainBtn.style.background = '#e74c3c';
-        this.mapWrapper.style.cursor = 'crosshair';
+    // enableAddMountainMode() {
+    //     this.addMountainBtn.textContent = '📍';
+    //     this.addMountainBtn.style.background = '#e74c3c';
+    //     this.mapWrapper.style.cursor = 'crosshair';
         
-        const clickHandler = (e) => {
-            const rect = this.mapWrapper.getBoundingClientRect();
-            const x = ((e.clientX - rect.left) / rect.width) * 100;
-            const y = ((e.clientY - rect.top) / rect.height) * 100;
+    //     const clickHandler = (e) => {
+    //         const rect = this.mapWrapper.getBoundingClientRect();
+    //         const x = ((e.clientX - rect.left) / rect.width) * 100;
+    //         const y = ((e.clientY - rect.top) / rect.height) * 100;
             
-            this.addNewMountain(x, y);
+    //         this.addNewMountain(x, y);
             
-            this.mapWrapper.removeEventListener('click', clickHandler);
-            this.addMountainBtn.textContent = '➕';
-            this.addMountainBtn.style.background = '';
-            this.mapWrapper.style.cursor = 'grab';
-        };
+    //         this.mapWrapper.removeEventListener('click', clickHandler);
+    //         this.addMountainBtn.textContent = '➕';
+    //         this.addMountainBtn.style.background = '';
+    //         this.mapWrapper.style.cursor = 'grab';
+    //     };
         
-        this.mapWrapper.addEventListener('click', clickHandler);
-    }
+    //     this.mapWrapper.addEventListener('click', clickHandler);
+    // }
 
     addNewMountain(x, y) {
         const mountainId = `custom-${Date.now()}`;
@@ -688,6 +688,7 @@ class NH4000Map {
         if (e.target.closest('.mountain-pin')) return;
         
         e.preventDefault();
+        e.stopPropagation();
         const touch = e.touches[0];
         this.isDragging = true;
         this.dragStart = { 
@@ -696,12 +697,18 @@ class NH4000Map {
         };
         this.mapWrapper.style.cursor = 'grabbing';
         this.mapWrapper.style.userSelect = 'none';
+        
+        // Prevent scrolling and bouncing on mobile
+        document.body.style.overflow = 'hidden';
+        document.body.style.position = 'fixed';
+        document.body.style.width = '100%';
     }
 
     touchDrag(e) {
         if (!this.isDragging) return;
         
         e.preventDefault();
+        e.stopPropagation();
         const touch = e.touches[0];
         
         // Use requestAnimationFrame for smoother performance
@@ -718,6 +725,11 @@ class NH4000Map {
         this.isDragging = false;
         this.mapWrapper.style.cursor = 'grab';
         this.mapWrapper.style.userSelect = 'auto';
+        
+        // Restore normal scrolling
+        document.body.style.overflow = '';
+        document.body.style.position = '';
+        document.body.style.width = '';
     }
 
     updateTransform() {
@@ -749,6 +761,7 @@ class NH4000Map {
     }
 
     hideInfoPanel() {
+        console.log('hideInfoPanel');
         const infoPanel = document.getElementById('info-panel');
         infoPanel.classList.add('hidden');
     }
