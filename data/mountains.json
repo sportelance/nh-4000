@@ -291,7 +291,16 @@
     "y": 62.793719806763285,
     "elevation": 4358,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756678433",
+        "mountainId": "mt-south-kinsman",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-field",
