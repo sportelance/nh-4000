@@ -16,8 +16,8 @@ class GitHubStorage {
     // Get headers for API requests
     getHeaders() {
         const headers = {
-            'Content-Type': 'application/json',
-            'Accept': 'application/vnd.github.v3+json'
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
         };
         
         if (this.token) {
@@ -27,27 +27,36 @@ class GitHubStorage {
         return headers;
     }
 
-    // Read data from a file in the repository
     async readFile(path) {
+        const url = `${this.baseUrl}/repos/${this.owner}/${this.repo}/contents/${path}?ref=${this.branch}`;
+        
         try {
-            const url = `${this.baseUrl}/repos/${this.owner}/${this.repo}/contents/${path}?ref=${this.branch}`;
             const response = await fetch(url, {
-                headers: this.getHeaders()
+                method: 'GET',
+                headers: this.getHeaders(),
+                mode: 'cors',
+                cache: 'no-cache'
             });
-
+            
             if (!response.ok) {
                 if (response.status === 404) {
                     return null; // File doesn't exist
                 }
-                throw new Error(`GitHub API error: ${response.status}`);
+                throw new Error(`HTTP ${response.status}: ${response.statusText}`);
             }
-
+            
             const data = await response.json();
-            const content = atob(data.content); // Decode base64 content
-            return JSON.parse(content);
+            return JSON.parse(atob(data.content));
         } catch (error) {
             console.error('Error reading file from GitHub:', error);
-            return null;
+            
+            // If it's a CORS error, try to provide a helpful message
+            if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
+                console.warn('CORS error detected. This might be due to network issues or GitHub API problems.');
+                console.warn('The app will fall back to localStorage data if available.');
+            }
+            
+            throw error;
         }
     }
 

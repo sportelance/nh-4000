@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug GitHub Storage - NH 4000 Tracker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .log {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>🐛 Debug GitHub Storage</h1>
+    <p>This page helps diagnose issues with the GitHub storage system.</p>
+
+    <div class="section">
+        <h2>1. Token Check</h2>
+        <button onclick="checkToken()">Check Token</button>
+        <div id="token-status"></div>
+    </div>
+
+    <div class="section">
+        <h2>2. Repository Configuration</h2>
+        <button onclick="checkRepoConfig()">Check Repository</button>
+        <div id="repo-status"></div>
+    </div>
+
+    <div class="section">
+        <h2>3. GitHub API Test</h2>
+        <button onclick="testGitHubAPI()">Test API Connection</button>
+        <div id="api-status"></div>
+    </div>
+
+    <div class="section">
+        <h2>4. File Operations Test</h2>
+        <button onclick="testFileOperations()">Test File Operations</button>
+        <div id="file-status"></div>
+    </div>
+
+    <div class="section">
+        <h2>5. Initialize Data</h2>
+        <button onclick="initializeData()">Initialize Mountains & Hikes</button>
+        <div id="init-status"></div>
+    </div>
+
+    <div class="section">
+        <h2>6. Console Log</h2>
+        <div id="console-log" class="log"></div>
+        <button onclick="clearLog()">Clear Log</button>
+    </div>
+
+    <script src="data/github-storage.js"></script>
+    <script>
+        const storage = new GitHubStorage('sportelance', 'nh-4000', 'main');
+        const logDiv = document.getElementById('console-log');
+
+        function log(message, type = 'info') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = document.createElement('div');
+            logEntry.innerHTML = `<strong>[${timestamp}]</strong> ${message}`;
+            logEntry.className = type;
+            logDiv.appendChild(logEntry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+        }
+
+        function clearLog() {
+            logDiv.innerHTML = '';
+        }
+
+        // Check token
+        async function checkToken() {
+            const statusDiv = document.getElementById('token-status');
+            const token = localStorage.getItem('github_token');
+            
+            if (!token) {
+                statusDiv.innerHTML = '<div class="error">❌ No token found in localStorage</div>';
+                log('No GitHub token found', 'error');
+                return;
+            }
+
+            log(`Token found: ${token.substring(0, 10)}...`, 'success');
+            statusDiv.innerHTML = `<div class="success">✅ Token found: ${token.substring(0, 10)}...</div>`;
+        }
+
+        // Check repository configuration
+        async function checkRepoConfig() {
+            const statusDiv = document.getElementById('repo-status');
+            log(`Repository: ${storage.owner}/${storage.repo} (${storage.branch})`, 'info');
+            statusDiv.innerHTML = `<div class="info">📁 Repository: ${storage.owner}/${storage.repo} (${storage.branch})</div>`;
+        }
+
+        // Test GitHub API
+        async function testGitHubAPI() {
+            const statusDiv = document.getElementById('api-status');
+            statusDiv.innerHTML = '<div class="warning">🔄 Testing GitHub API...</div>';
+            log('Testing GitHub API connection...', 'warning');
+
+            try {
+                const response = await fetch('https://api.github.com/user', {
+                    headers: {
+                        'Authorization': `token ${localStorage.getItem('github_token')}`,
+                        'Accept': 'application/vnd.github.v3+json'
+                    }
+                });
+
+                if (response.ok) {
+                    const user = await response.json();
+                    statusDiv.innerHTML = `<div class="success">✅ API working! Authenticated as: ${user.login}</div>`;
+                    log(`GitHub API working - authenticated as ${user.login}`, 'success');
+                } else {
+                    statusDiv.innerHTML = `<div class="error">❌ API error: ${response.status} ${response.statusText}</div>`;
+                    log(`GitHub API error: ${response.status} ${response.statusText}`, 'error');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="error">❌ Network error: ${error.message}</div>`;
+                log(`Network error: ${error.message}`, 'error');
+            }
+        }
+
+        // Test file operations
+        async function testFileOperations() {
+            const statusDiv = document.getElementById('file-status');
+            statusDiv.innerHTML = '<div class="warning">🔄 Testing file operations...</div>';
+            log('Testing file operations...', 'warning');
+
+            try {
+                // Test reading mountains
+                log('Testing readMountains()...', 'info');
+                const mountains = await storage.readMountains();
+                log(`Mountains read result: ${mountains ? mountains.length + ' mountains' : 'null'}`, 'info');
+
+                // Test reading hikes
+                log('Testing readHikes()...', 'info');
+                const hikes = await storage.readHikes();
+                log(`Hikes read result: ${hikes ? hikes.length + ' hikes' : 'null'}`, 'info');
+
+                if (mountains === null && hikes === null) {
+                    statusDiv.innerHTML = '<div class="warning">⚠️ Files don\'t exist yet - need to initialize data</div>';
+                    log('Files don\'t exist yet - need to initialize data', 'warning');
+                } else {
+                    statusDiv.innerHTML = '<div class="success">✅ File operations working!</div>';
+                    log('File operations working!', 'success');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="error">❌ File operation error: ${error.message}</div>`;
+                log(`File operation error: ${error.message}`, 'error');
+            }
+        }
+
+        // Initialize data
+        async function initializeData() {
+            const statusDiv = document.getElementById('init-status');
+            statusDiv.innerHTML = '<div class="warning">🔄 Initializing data...</div>';
+            log('Initializing mountains and hikes data...', 'warning');
+
+            try {
+                // Load local mountains data
+                const mountainsResponse = await fetch('data/mountains.json');
+                const mountains = await mountainsResponse.json();
+                log(`Loaded ${mountains.length} mountains from local file`, 'info');
+
+                // Load local hikes data
+                const hikesResponse = await fetch('data/hikes.json');
+                const hikes = await hikesResponse.json();
+                log(`Loaded ${hikes.length} hikes from local file`, 'info');
+
+                // Write mountains to GitHub
+                log('Writing mountains to GitHub...', 'info');
+                const mountainsSuccess = await storage.writeMountains(mountains);
+                if (mountainsSuccess) {
+                    log('Mountains written successfully!', 'success');
+                } else {
+                    log('Failed to write mountains', 'error');
+                }
+
+                // Write hikes to GitHub
+                log('Writing hikes to GitHub...', 'info');
+                const hikesSuccess = await storage.writeHikes(hikes);
+                if (hikesSuccess) {
+                    log('Hikes written successfully!', 'success');
+                } else {
+                    log('Failed to write hikes', 'error');
+                }
+
+                if (mountainsSuccess && hikesSuccess) {
+                    statusDiv.innerHTML = `
+                        <div class="success">
+                            ✅ Data initialized successfully!
+                            <br>Mountains: ${mountains.length}
+                            <br>Hikes: ${hikes.length}
+                        </div>
+                    `;
+                    log('All data initialized successfully!', 'success');
+                } else {
+                    statusDiv.innerHTML = '<div class="error">❌ Failed to initialize some data</div>';
+                    log('Failed to initialize some data', 'error');
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<div class="error">❌ Error initializing data: ${error.message}</div>`;
+                log(`Error initializing data: ${error.message}`, 'error');
+            }
+        }
+
+        // Run initial checks
+        window.onload = function() {
+            log('Debug page loaded', 'info');
+            checkToken();
+            checkRepoConfig();
+        };
+    </script>
+</body>
+</html> 
