@@ -5,7 +5,8 @@
     "x": 71.22063104453298,
     "y": 41.0274154589372,
     "elevation": 6288,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-adams",
@@ -13,7 +14,8 @@
     "x": 71.64946358448455,
     "y": 33.77838164251208,
     "elevation": 5774,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-jefferson",
@@ -21,7 +23,8 @@
     "x": 69.52849935493592,
     "y": 36.05869565217391,
     "elevation": 5712,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-monroe",
@@ -29,7 +32,8 @@
     "x": 68.79455944948253,
     "y": 43.23393719806763,
     "elevation": 5372,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-madison",
@@ -37,7 +41,8 @@
     "x": 73.83907357968191,
     "y": 32.53683574879227,
     "elevation": 5367,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-lafayette",
@@ -45,7 +50,8 @@
     "x": 30.127322171841303,
     "y": 57.44987922705314,
     "elevation": 5260,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-lincoln",
@@ -53,7 +59,8 @@
     "x": 30.23965160653916,
     "y": 59.373429951690824,
     "elevation": 5089,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-south-twin",
@@ -61,7 +68,8 @@
     "x": 41.530523420063844,
     "y": 53.49214975845411,
     "elevation": 4902,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-carter-dome",
@@ -69,7 +77,8 @@
     "x": 85.83024073367798,
     "y": 41.45193236714976,
     "elevation": 4832,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-moosilauke",
@@ -77,7 +86,8 @@
     "x": 8.855030440432804,
     "y": 77.03055555555555,
     "elevation": 4802,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-eisenhower",
@@ -85,7 +95,8 @@
     "x": 65.39564440489308,
     "y": 45.856280193236714,
     "elevation": 4760,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-north-twin",
@@ -93,7 +104,8 @@
     "x": 40.93631699014041,
     "y": 51.27113526570049,
     "elevation": 4761,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-carrigain",
@@ -101,7 +113,8 @@
     "x": 53.772939502876895,
     "y": 67.16980676328504,
     "elevation": 4700,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-bond",
@@ -109,7 +122,8 @@
     "x": 44.345813793070974,
     "y": 58.346376811594205,
     "elevation": 4698,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-middle-carter",
@@ -117,7 +131,8 @@
     "x": 86.29068288508441,
     "y": 36.36123188405798,
     "elevation": 4610,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-west-bond",
@@ -125,7 +140,8 @@
     "x": 41.07822108276596,
     "y": 58.43442028985507,
     "elevation": 4540,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-garfield",
@@ -133,7 +149,8 @@
     "x": 33.71223196881091,
     "y": 53.40893719806763,
     "elevation": 4500,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-liberty",
@@ -141,7 +158,8 @@
     "x": 30.754630512472808,
     "y": 63.54975845410629,
     "elevation": 4459,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-south-carter",
@@ -149,7 +167,8 @@
     "x": 85.26262436317579,
     "y": 38.196135265700484,
     "elevation": 4430,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-wildcat",
@@ -157,7 +176,8 @@
     "x": 82.56536129474247,
     "y": 42.68997584541063,
     "elevation": 4422,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-wildcat-d",
@@ -165,7 +185,8 @@
     "x": 79.82142995875357,
     "y": 43.824637681159416,
     "elevation": 4070,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-hancock",
@@ -173,7 +194,8 @@
     "x": 48.423046680038794,
     "y": 68.7542270531401,
     "elevation": 4420,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-south-kinsman",
@@ -181,7 +203,8 @@
     "x": 19.60254252949873,
     "y": 62.793719806763285,
     "elevation": 4358,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-field",
@@ -189,7 +212,8 @@
     "x": 55.587439731238995,
     "y": 51.869927536231884,
     "elevation": 4340,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-osceola",
@@ -197,7 +221,8 @@
     "x": 43.19592938667119,
     "y": 80.84746376811594,
     "elevation": 4340,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-flume",
@@ -205,7 +230,8 @@
     "x": 32.337688693015416,
     "y": 64.94142512077296,
     "elevation": 4328,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-south-hancock",
@@ -213,7 +239,8 @@
     "x": 48.524658692827074,
     "y": 70.3433574879227,
     "elevation": 4319,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-pierce",
@@ -221,7 +248,17 @@
     "x": 63.40898710813534,
     "y": 47.907850241545894,
     "elevation": 4310,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": [
+      {
+        "id": "hike-1753749346538",
+        "mountainId": "mt-pierce",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-north-kinsman",
@@ -229,7 +266,8 @@
     "x": 19.67444422079084,
     "y": 60.21086956521739,
     "elevation": 4293,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-willey",
@@ -237,7 +275,8 @@
     "x": 57.04283849384599,
     "y": 53.71207729468599,
     "elevation": 4285,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-bondcliff",
@@ -245,7 +284,8 @@
     "x": 43.036524693712266,
     "y": 60.17403381642512,
     "elevation": 4265,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-zealand",
@@ -253,7 +293,8 @@
     "x": 46.30493138542814,
     "y": 54.48599033816425,
     "elevation": 4260,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-north-tripyramid",
@@ -261,7 +302,8 @@
     "x": 54.19295391087757,
     "y": 84.37657004830919,
     "elevation": 4180,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-cabot",
@@ -269,7 +311,8 @@
     "x": 57.75887080826059,
     "y": 7.3142149758454105,
     "elevation": 4170,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-east-osceola",
@@ -277,7 +320,8 @@
     "x": 45.50166739648369,
     "y": 79.16376811594202,
     "elevation": 4156,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-middle-tripyramid",
@@ -285,7 +329,8 @@
     "x": 54.71552997664586,
     "y": 85.94408212560386,
     "elevation": 4140,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-cannon",
@@ -293,7 +338,8 @@
     "x": 24.297722970873238,
     "y": 57.94685990338164,
     "elevation": 4100,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-hale",
@@ -301,7 +347,8 @@
     "x": 46.1540734972832,
     "y": 48.76545893719807,
     "elevation": 4054,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-jackson",
@@ -309,7 +356,8 @@
     "x": 61.9531813548229,
     "y": 50.9487922705314,
     "elevation": 4052,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-tom",
@@ -317,7 +365,8 @@
     "x": 54.08469438323398,
     "y": 50.189130434782605,
     "elevation": 4051,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-moriah",
@@ -325,7 +374,8 @@
     "x": 90.56924050767013,
     "y": 31.10012077294686,
     "elevation": 4049,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-passaconaway",
@@ -333,7 +383,8 @@
     "x": 61.524077487734374,
     "y": 87.25217391304348,
     "elevation": 4043,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-owl-head",
@@ -341,7 +392,8 @@
     "x": 35.0344091071748,
     "y": 59.7650966183575,
     "elevation": 4025,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-galehead",
@@ -349,7 +401,8 @@
     "x": 38.53927739874378,
     "y": 53.46400966183575,
     "elevation": 4024,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-whiteface",
@@ -357,7 +410,8 @@
     "x": 58.955423482216005,
     "y": 90.43599033816425,
     "elevation": 4020,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-waumbek",
@@ -365,7 +419,8 @@
     "x": 57.04216017600362,
     "y": 18.065458937198066,
     "elevation": 4006,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-isolation",
@@ -373,7 +428,8 @@
     "x": 70.01295395796255,
     "y": 48.9975845410628,
     "elevation": 4004,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   },
   {
     "id": "mt-tecumseh",
@@ -381,6 +437,7 @@
     "x": 40.89439694748142,
     "y": 85.52572463768117,
     "elevation": 4003,
-    "is_custom": false
+    "is_custom": false,
+    "hikes": []
   }
-] 
+]
