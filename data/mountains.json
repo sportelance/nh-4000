@@ -341,14 +341,6 @@
     "is_custom": false,
     "hikes": [
       {
-        "id": "hike-1753756972579",
-        "mountainId": "mt-hale",
-        "date": "",
-        "companions": "",
-        "notes": "",
-        "completed": true
-      },
-      {
         "id": "hike-1753756981105",
         "mountainId": "mt-hale",
         "date": "",
