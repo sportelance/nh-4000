@@ -138,7 +138,16 @@
     "y": 59.373429951690824,
     "elevation": 5089,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756701970",
+        "mountainId": "mt-lincoln",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-south-twin",
