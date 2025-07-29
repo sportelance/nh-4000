@@ -327,7 +327,16 @@
     "y": 47.907850241545894,
     "elevation": 4310,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756647011",
+        "mountainId": "mt-pierce",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-north-kinsman",
