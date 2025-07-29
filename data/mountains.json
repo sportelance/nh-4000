@@ -264,7 +264,16 @@
     "y": 63.54975845410629,
     "elevation": 4459,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756705703",
+        "mountainId": "mt-liberty",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-south-carter",
