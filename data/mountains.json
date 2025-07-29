@@ -6,7 +6,16 @@
     "y": 41.0274154589372,
     "elevation": 6288,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756614065",
+        "mountainId": "mt-washington",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-adams",
@@ -15,16 +24,7 @@
     "y": 33.77838164251208,
     "elevation": 5774,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753749592273",
-        "mountainId": "mt-adams",
-        "date": "",
-        "companions": "",
-        "notes": "",
-        "completed": true
-      }
-    ]
+    "hikes": []
   },
   {
     "id": "mt-jefferson",
@@ -51,16 +51,7 @@
     "y": 32.53683574879227,
     "elevation": 5367,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753749765879",
-        "mountainId": "mt-madison",
-        "date": "",
-        "companions": "",
-        "notes": "",
-        "completed": true
-      }
-    ]
+    "hikes": []
   },
   {
     "id": "mt-lafayette",
