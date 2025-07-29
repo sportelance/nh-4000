@@ -489,7 +489,16 @@
     "y": 48.9975845410628,
     "elevation": 4004,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756637947",
+        "mountainId": "mt-isolation",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-tecumseh",
