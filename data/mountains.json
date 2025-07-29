@@ -347,6 +347,14 @@
         "companions": "",
         "notes": "",
         "completed": true
+      },
+      {
+        "id": "hike-1753756981105",
+        "mountainId": "mt-hale",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": false
       }
     ]
   },
