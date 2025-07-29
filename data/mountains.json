@@ -24,7 +24,16 @@
     "y": 33.77838164251208,
     "elevation": 5774,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756621617",
+        "mountainId": "mt-adams",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-jefferson",
