@@ -420,16 +420,7 @@
     "y": 18.065458937198066,
     "elevation": 4006,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753758315825",
-        "mountainId": "mt-waumbek",
-        "date": "",
-        "companions": "",
-        "notes": "",
-        "completed": true
-      }
-    ]
+    "hikes": []
   },
   {
     "id": "mt-isolation",
