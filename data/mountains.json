@@ -1,0 +1,386 @@
+[
+  {
+    "id": "mt-washington",
+    "name": "Washington",
+    "x": 71.22063104453298,
+    "y": 41.0274154589372,
+    "elevation": 6288,
+    "is_custom": false
+  },
+  {
+    "id": "mt-adams",
+    "name": "Adams",
+    "x": 71.64946358448455,
+    "y": 33.77838164251208,
+    "elevation": 5774,
+    "is_custom": false
+  },
+  {
+    "id": "mt-jefferson",
+    "name": "Jefferson",
+    "x": 69.52849935493592,
+    "y": 36.05869565217391,
+    "elevation": 5712,
+    "is_custom": false
+  },
+  {
+    "id": "mt-monroe",
+    "name": "Monroe",
+    "x": 68.79455944948253,
+    "y": 43.23393719806763,
+    "elevation": 5372,
+    "is_custom": false
+  },
+  {
+    "id": "mt-madison",
+    "name": "Madison",
+    "x": 73.83907357968191,
+    "y": 32.53683574879227,
+    "elevation": 5367,
+    "is_custom": false
+  },
+  {
+    "id": "mt-lafayette",
+    "name": "Lafayette",
+    "x": 30.127322171841303,
+    "y": 57.44987922705314,
+    "elevation": 5260,
+    "is_custom": false
+  },
+  {
+    "id": "mt-lincoln",
+    "name": "Lincoln",
+    "x": 30.23965160653916,
+    "y": 59.373429951690824,
+    "elevation": 5089,
+    "is_custom": false
+  },
+  {
+    "id": "mt-south-twin",
+    "name": "South Twin",
+    "x": 41.530523420063844,
+    "y": 53.49214975845411,
+    "elevation": 4902,
+    "is_custom": false
+  },
+  {
+    "id": "mt-carter-dome",
+    "name": "Carter Dome",
+    "x": 85.83024073367798,
+    "y": 41.45193236714976,
+    "elevation": 4832,
+    "is_custom": false
+  },
+  {
+    "id": "mt-moosilauke",
+    "name": "Moosilauke",
+    "x": 8.855030440432804,
+    "y": 77.03055555555555,
+    "elevation": 4802,
+    "is_custom": false
+  },
+  {
+    "id": "mt-eisenhower",
+    "name": "Eisenhower",
+    "x": 65.39564440489308,
+    "y": 45.856280193236714,
+    "elevation": 4760,
+    "is_custom": false
+  },
+  {
+    "id": "mt-north-twin",
+    "name": "North Twin",
+    "x": 40.93631699014041,
+    "y": 51.27113526570049,
+    "elevation": 4761,
+    "is_custom": false
+  },
+  {
+    "id": "mt-carrigain",
+    "name": "Carrigain",
+    "x": 53.772939502876895,
+    "y": 67.16980676328504,
+    "elevation": 4700,
+    "is_custom": false
+  },
+  {
+    "id": "mt-bond",
+    "name": "Bond",
+    "x": 44.345813793070974,
+    "y": 58.346376811594205,
+    "elevation": 4698,
+    "is_custom": false
+  },
+  {
+    "id": "mt-middle-carter",
+    "name": "Middle Carter",
+    "x": 86.29068288508441,
+    "y": 36.36123188405798,
+    "elevation": 4610,
+    "is_custom": false
+  },
+  {
+    "id": "mt-west-bond",
+    "name": "West Bond",
+    "x": 41.07822108276596,
+    "y": 58.43442028985507,
+    "elevation": 4540,
+    "is_custom": false
+  },
+  {
+    "id": "mt-garfield",
+    "name": "Garfield",
+    "x": 33.71223196881091,
+    "y": 53.40893719806763,
+    "elevation": 4500,
+    "is_custom": false
+  },
+  {
+    "id": "mt-liberty",
+    "name": "Liberty",
+    "x": 30.754630512472808,
+    "y": 63.54975845410629,
+    "elevation": 4459,
+    "is_custom": false
+  },
+  {
+    "id": "mt-south-carter",
+    "name": "South Carter",
+    "x": 85.26262436317579,
+    "y": 38.196135265700484,
+    "elevation": 4430,
+    "is_custom": false
+  },
+  {
+    "id": "mt-wildcat",
+    "name": "Wildcat",
+    "x": 82.56536129474247,
+    "y": 42.68997584541063,
+    "elevation": 4422,
+    "is_custom": false
+  },
+  {
+    "id": "mt-wildcat-d",
+    "name": "Wildcat D",
+    "x": 79.82142995875357,
+    "y": 43.824637681159416,
+    "elevation": 4070,
+    "is_custom": false
+  },
+  {
+    "id": "mt-hancock",
+    "name": "Hancock",
+    "x": 48.423046680038794,
+    "y": 68.7542270531401,
+    "elevation": 4420,
+    "is_custom": false
+  },
+  {
+    "id": "mt-south-kinsman",
+    "name": "South Kinsman",
+    "x": 19.60254252949873,
+    "y": 62.793719806763285,
+    "elevation": 4358,
+    "is_custom": false
+  },
+  {
+    "id": "mt-field",
+    "name": "Field",
+    "x": 55.587439731238995,
+    "y": 51.869927536231884,
+    "elevation": 4340,
+    "is_custom": false
+  },
+  {
+    "id": "mt-osceola",
+    "name": "Osceola",
+    "x": 43.19592938667119,
+    "y": 80.84746376811594,
+    "elevation": 4340,
+    "is_custom": false
+  },
+  {
+    "id": "mt-flume",
+    "name": "Flume",
+    "x": 32.337688693015416,
+    "y": 64.94142512077296,
+    "elevation": 4328,
+    "is_custom": false
+  },
+  {
+    "id": "mt-south-hancock",
+    "name": "South Hancock",
+    "x": 48.524658692827074,
+    "y": 70.3433574879227,
+    "elevation": 4319,
+    "is_custom": false
+  },
+  {
+    "id": "mt-pierce",
+    "name": "Pierce",
+    "x": 63.40898710813534,
+    "y": 47.907850241545894,
+    "elevation": 4310,
+    "is_custom": false
+  },
+  {
+    "id": "mt-north-kinsman",
+    "name": "North Kinsman",
+    "x": 19.67444422079084,
+    "y": 60.21086956521739,
+    "elevation": 4293,
+    "is_custom": false
+  },
+  {
+    "id": "mt-willey",
+    "name": "Willey",
+    "x": 57.04283849384599,
+    "y": 53.71207729468599,
+    "elevation": 4285,
+    "is_custom": false
+  },
+  {
+    "id": "mt-bondcliff",
+    "name": "Bondcliff",
+    "x": 43.036524693712266,
+    "y": 60.17403381642512,
+    "elevation": 4265,
+    "is_custom": false
+  },
+  {
+    "id": "mt-zealand",
+    "name": "Zealand",
+    "x": 46.30493138542814,
+    "y": 54.48599033816425,
+    "elevation": 4260,
+    "is_custom": false
+  },
+  {
+    "id": "mt-north-tripyramid",
+    "name": "North Tripyramid",
+    "x": 54.19295391087757,
+    "y": 84.37657004830919,
+    "elevation": 4180,
+    "is_custom": false
+  },
+  {
+    "id": "mt-cabot",
+    "name": "Cabot",
+    "x": 57.75887080826059,
+    "y": 7.3142149758454105,
+    "elevation": 4170,
+    "is_custom": false
+  },
+  {
+    "id": "mt-east-osceola",
+    "name": "East Osceola",
+    "x": 45.50166739648369,
+    "y": 79.16376811594202,
+    "elevation": 4156,
+    "is_custom": false
+  },
+  {
+    "id": "mt-middle-tripyramid",
+    "name": "Middle Tripyramid",
+    "x": 54.71552997664586,
+    "y": 85.94408212560386,
+    "elevation": 4140,
+    "is_custom": false
+  },
+  {
+    "id": "mt-cannon",
+    "name": "Cannon",
+    "x": 24.297722970873238,
+    "y": 57.94685990338164,
+    "elevation": 4100,
+    "is_custom": false
+  },
+  {
+    "id": "mt-hale",
+    "name": "Hale",
+    "x": 46.1540734972832,
+    "y": 48.76545893719807,
+    "elevation": 4054,
+    "is_custom": false
+  },
+  {
+    "id": "mt-jackson",
+    "name": "Jackson",
+    "x": 61.9531813548229,
+    "y": 50.9487922705314,
+    "elevation": 4052,
+    "is_custom": false
+  },
+  {
+    "id": "mt-tom",
+    "name": "Tom",
+    "x": 54.08469438323398,
+    "y": 50.189130434782605,
+    "elevation": 4051,
+    "is_custom": false
+  },
+  {
+    "id": "mt-moriah",
+    "name": "Moriah",
+    "x": 90.56924050767013,
+    "y": 31.10012077294686,
+    "elevation": 4049,
+    "is_custom": false
+  },
+  {
+    "id": "mt-passaconaway",
+    "name": "Passaconaway",
+    "x": 61.524077487734374,
+    "y": 87.25217391304348,
+    "elevation": 4043,
+    "is_custom": false
+  },
+  {
+    "id": "mt-owl-head",
+    "name": "Owl's Head",
+    "x": 35.0344091071748,
+    "y": 59.7650966183575,
+    "elevation": 4025,
+    "is_custom": false
+  },
+  {
+    "id": "mt-galehead",
+    "name": "Galehead",
+    "x": 38.53927739874378,
+    "y": 53.46400966183575,
+    "elevation": 4024,
+    "is_custom": false
+  },
+  {
+    "id": "mt-whiteface",
+    "name": "Whiteface",
+    "x": 58.955423482216005,
+    "y": 90.43599033816425,
+    "elevation": 4020,
+    "is_custom": false
+  },
+  {
+    "id": "mt-waumbek",
+    "name": "Waumbek",
+    "x": 57.04216017600362,
+    "y": 18.065458937198066,
+    "elevation": 4006,
+    "is_custom": false
+  },
+  {
+    "id": "mt-isolation",
+    "name": "Isolation",
+    "x": 70.01295395796255,
+    "y": 48.9975845410628,
+    "elevation": 4004,
+    "is_custom": false
+  },
+  {
+    "id": "mt-tecumseh",
+    "name": "Tecumseh",
+    "x": 40.89439694748142,
+    "y": 85.52572463768117,
+    "elevation": 4003,
+    "is_custom": false
+  }
+] 

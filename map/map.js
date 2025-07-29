@@ -1,58 +1,58 @@
 // NH 4000 Footers Map Application
 class NH4000Map {
     constructor() {
-        this.zoomLevel = 1;
+        this.zoom = 1;
         this.maxZoom = 8;
         this.minZoom = 0.5;
         this.isDragging = false;
-        this.dragStart = { x: 0, y: 0 };
-        this.currentPosition = { x: 0, y: 0 };
+        this.lastMousePos = { x: 0, y: 0 };
         this.mountains = new Map();
         this.currentMountain = null;
         this.editingHikeId = null;
-        this.resizeTimeout = null;
-        this.gestureStartZoom = null;
+        this.isPanning = false;
+        this.isZooming = false;
+        this.longPressTimer = null;
+        this.longPressThreshold = 500; // 500ms for long press
+        this.touchStartPos = { x: 0, y: 0 };
+        this.touchStartTime = 0;
+        
+        // Initialize GitHub storage
+        this.githubStorage = new GitHubStorage('sportelance', 'nh-4000', 'main');
         
         this.initializeElements();
-        this.loadMountains();
+        this.initializeMap();
         this.setupEventListeners();
         this.initializeInfoPanel();
-        
-        // Wait for image to load before rendering mountains
-        this.initializeMap();
     }
 
     initializeElements() {
-        this.mapBackground = document.querySelector('.map-background');
-        this.mapWrapper = document.querySelector('.map-wrapper');
-        this.mountainPins = document.getElementById('mountain-pins');
+        this.mapContainer = document.getElementById('map-container');
+        this.mapWrapper = document.getElementById('map-wrapper');
+        this.mapBackground = document.getElementById('map-background');
         this.mapImage = document.getElementById('map-image');
-        
-        // Controls
+        this.mountainPins = document.getElementById('mountain-pins');
         this.zoomInBtn = document.getElementById('zoom-in');
         this.zoomOutBtn = document.getElementById('zoom-out');
-        this.resetZoomBtn = document.getElementById('reset-zoom');
-        this.addMountainBtn = document.getElementById('add-mountain');
-        
-        // Modals
+        this.resetBtn = document.getElementById('reset');
         this.hikeModal = document.getElementById('hike-modal');
         this.detailsModal = document.getElementById('details-modal');
-        this.hikeForm = document.getElementById('hike-form');
-        this.hikeList = document.getElementById('hike-list');
+        this.infoPanel = document.getElementById('info-panel');
+        this.closePanelBtn = document.getElementById('close-panel');
         
         // Form elements
         this.mountainNameInput = document.getElementById('mountain-name');
         this.hikeDateInput = document.getElementById('hike-date');
-        this.hikeCompanionsInput = document.getElementById('hike-companions');
-        this.hikeNotesInput = document.getElementById('hike-notes');
-        this.hikeCompletedInput = document.getElementById('hike-completed');
+        this.companionsInput = document.getElementById('companions');
+        this.notesInput = document.getElementById('notes');
+        this.completedCheckbox = document.getElementById('completed');
+        this.hikeForm = document.getElementById('hike-form');
     }
 
     setupEventListeners() {
         // Zoom controls
         this.zoomInBtn.addEventListener('click', () => this.zoomIn());
         this.zoomOutBtn.addEventListener('click', () => this.zoomOut());
-        this.resetZoomBtn.addEventListener('click', () => this.resetZoom());
+        this.resetBtn.addEventListener('click', () => this.resetZoom());
         // this.addMountainBtn.addEventListener('click', () => this.enableAddMountainMode());
         
         // Map interactions (mouse)
@@ -201,90 +201,163 @@ class NH4000Map {
         }, { passive: false });
     }
 
-    loadMountains() {
-        // Load from localStorage or use default mountains
-        const savedMountains = localStorage.getItem('nh4000_mountains');
-        if (savedMountains) {
-            this.mountains = new Map(JSON.parse(savedMountains));
+    async initializeMap() {
+        // Wait for image to load
+        if (this.mapImage.complete && this.mapImage.naturalHeight) {
+            await this.loadData();
+            this.renderMountains();
+            this.updateTransform();
         } else {
-            this.initializeDefaultMountains();
+            this.mapImage.addEventListener('load', async () => {
+                await this.loadData();
+                this.renderMountains();
+                this.updateTransform();
+            });
+            
+            // Fallback timeout
+            setTimeout(async () => {
+                if (this.mountains.size === 0) {
+                    await this.loadData();
+                    this.renderMountains();
+                    this.updateTransform();
+                }
+            }, 2000);
+        }
+    }
+
+    async loadData() {
+        try {
+            // Load mountains from GitHub
+            const mountainsData = await this.githubStorage.readMountains();
+            
+            // Load hikes from GitHub
+            const hikesData = await this.githubStorage.readHikes();
+            
+            // Process mountains data
+            this.mountains.clear();
+            if (mountainsData) {
+                mountainsData.forEach(mountain => {
+                    this.mountains.set(mountain.id, {
+                        id: mountain.id,
+                        name: mountain.name,
+                        x: parseFloat(mountain.x),
+                        y: parseFloat(mountain.y),
+                        elevation: mountain.elevation,
+                        is_custom: mountain.is_custom,
+                        hikes: []
+                    });
+                });
+            }
+            
+            // Process hikes data and associate with mountains
+            if (hikesData) {
+                hikesData.forEach(hike => {
+                    const mountain = this.mountains.get(hike.mountain_id);
+                    if (mountain) {
+                        mountain.hikes.push({
+                            id: hike.id,
+                            mountainId: hike.mountain_id,
+                            date: hike.hike_date,
+                            companions: hike.companions,
+                            notes: hike.notes,
+                            completed: hike.completed
+                        });
+                    }
+                });
+            }
+            
+            console.log('Data loaded from GitHub:', this.mountains.size, 'mountains,', hikesData ? hikesData.length : 0, 'hikes');
+        } catch (error) {
+            console.error('Error loading data from GitHub:', error);
+            // Fallback to localStorage if GitHub fails
+            this.loadFromLocalStorage();
+        }
+    }
+
+    loadFromLocalStorage() {
+        const mountainsData = localStorage.getItem('nh4000_mountains');
+        const hikesData = localStorage.getItem('nh4000_hikes');
+        
+        if (mountainsData) {
+            const mountains = JSON.parse(mountainsData);
+            this.mountains.clear();
+            mountains.forEach(([id, mountain]) => {
+                this.mountains.set(id, mountain);
+            });
         }
         
-        // Load hikes
-        const savedHikes = localStorage.getItem('nh4000_hikes');
-        if (savedHikes) {
-            const hikes = JSON.parse(savedHikes);
+        if (hikesData) {
+            const hikes = JSON.parse(hikesData);
             hikes.forEach(hike => {
-                if (this.mountains.has(hike.mountainId)) {
-                    const mountain = this.mountains.get(hike.mountainId);
-                    if (!mountain.hikes) mountain.hikes = [];
+                const mountain = this.mountains.get(hike.mountainId);
+                if (mountain) {
                     mountain.hikes.push(hike);
                 }
             });
         }
     }
 
-    initializeDefaultMountains() {
-        // Default NH 4000 footers with positions from localStorage
-        const defaultMountains = [
-            { id: 'mt-washington', name: 'Washington', x: 71.22063104453298, y: 41.0274154589372, elevation: 6288 },
-            { id: 'mt-adams', name: 'Adams', x: 71.64946358448455, y: 33.77838164251208, elevation: 5774 },
-            { id: 'mt-jefferson', name: 'Jefferson', x: 69.52849935493592, y: 36.05869565217391, elevation: 5712 },
-            { id: 'mt-monroe', name: 'Monroe', x: 68.79455944948253, y: 43.23393719806763, elevation: 5372 },
-            { id: 'mt-madison', name: 'Madison', x: 73.83907357968191, y: 32.53683574879227, elevation: 5367 },
-            { id: 'mt-lafayette', name: 'Lafayette', x: 30.127322171841303, y: 57.44987922705314, elevation: 5260 },
-            { id: 'mt-lincoln', name: 'Lincoln', x: 30.23965160653916, y: 59.373429951690824, elevation: 5089 },
-            { id: 'mt-south-twin', name: 'South Twin', x: 41.530523420063844, y: 53.49214975845411, elevation: 4902 },
-            { id: 'mt-carter-dome', name: 'Carter Dome', x: 85.83024073367798, y: 41.45193236714976, elevation: 4832 },
-            { id: 'mt-moosilauke', name: 'Moosilauke', x: 8.855030440432804, y: 77.03055555555555, elevation: 4802 },
-            { id: 'mt-eisenhower', name: 'Eisenhower', x: 65.39564440489308, y: 45.856280193236714, elevation: 4760 },
-            { id: 'mt-north-twin', name: 'North Twin', x: 40.93631699014041, y: 51.27113526570049, elevation: 4761 },
-            { id: 'mt-carrigain', name: 'Carrigain', x: 53.772939502876895, y: 67.16980676328504, elevation: 4700 },
-            { id: 'mt-bond', name: 'Bond', x: 44.345813793070974, y: 58.346376811594205, elevation: 4698 },
-            { id: 'mt-middle-carter', name: 'Middle Carter', x: 86.29068288508441, y: 36.36123188405798, elevation: 4610 },
-            { id: 'mt-west-bond', name: 'West Bond', x: 41.07822108276596, y: 58.43442028985507, elevation: 4540 },
-            { id: 'mt-garfield', name: 'Garfield', x: 33.71223196881091, y: 53.40893719806763, elevation: 4500 },
-            { id: 'mt-liberty', name: 'Liberty', x: 30.754630512472808, y: 63.54975845410629, elevation: 4459 },
-            { id: 'mt-south-carter', name: 'South Carter', x: 85.26262436317579, y: 38.196135265700484, elevation: 4430 },
-            { id: 'mt-wildcat', name: 'Wildcat', x: 82.56536129474247, y: 42.68997584541063, elevation: 4422 },
-            { id: 'mt-wildcat-d', name: 'Wildcat D', x: 79.82142995875357, y: 43.824637681159416, elevation: 4070 },
-            { id: 'mt-hancock', name: 'Hancock', x: 48.423046680038794, y: 68.7542270531401, elevation: 4420 },
-            { id: 'mt-south-kinsman', name: 'South Kinsman', x: 19.60254252949873, y: 62.793719806763285, elevation: 4358 },
-            { id: 'mt-field', name: 'Field', x: 55.587439731238995, y: 51.869927536231884, elevation: 4340 },
-            { id: 'mt-osceola', name: 'Osceola', x: 43.19592938667119, y: 80.84746376811594, elevation: 4340 },
-            { id: 'mt-flume', name: 'Flume', x: 32.337688693015416, y: 64.94142512077296, elevation: 4328 },
-            { id: 'mt-south-hancock', name: 'South Hancock', x: 48.524658692827074, y: 70.3433574879227, elevation: 4319 },
-            { id: 'mt-pierce', name: 'Pierce', x: 63.40898710813534, y: 47.907850241545894, elevation: 4310 },
-            { id: 'mt-north-kinsman', name: 'North Kinsman', x: 19.67444422079084, y: 60.21086956521739, elevation: 4293 },
-            { id: 'mt-willey', name: 'Willey', x: 57.04283849384599, y: 53.71207729468599, elevation: 4285 },
-            { id: 'mt-bondcliff', name: 'Bondcliff', x: 43.036524693712266, y: 60.17403381642512, elevation: 4265 },
-            { id: 'mt-zealand', name: 'Zealand', x: 46.30493138542814, y: 54.48599033816425, elevation: 4260 },
-            { id: 'mt-north-tripyramid', name: 'North Tripyramid', x: 54.19295391087757, y: 84.37657004830919, elevation: 4180 },
-            { id: 'mt-cabot', name: 'Cabot', x: 57.75887080826059, y: 7.3142149758454105, elevation: 4170 },
-            { id: 'mt-east-osceola', name: 'East Osceola', x: 45.50166739648369, y: 79.16376811594202, elevation: 4156 },
-            { id: 'mt-middle-tripyramid', name: 'Middle Tripyramid', x: 54.71552997664586, y: 85.94408212560386, elevation: 4140 },
-            { id: 'mt-cannon', name: 'Cannon', x: 24.297722970873238, y: 57.94685990338164, elevation: 4100 },
-            { id: 'mt-hale', name: 'Hale', x: 46.1540734972832, y: 48.76545893719807, elevation: 4054 },
-            { id: 'mt-jackson', name: 'Jackson', x: 61.9531813548229, y: 50.9487922705314, elevation: 4052 },
-            { id: 'mt-tom', name: 'Tom', x: 54.08469438323398, y: 50.189130434782605, elevation: 4051 },
-            { id: 'mt-moriah', name: 'Moriah', x: 90.56924050767013, y: 31.10012077294686, elevation: 4049 },
-            { id: 'mt-passaconaway', name: 'Passaconaway', x: 61.524077487734374, y: 87.25217391304348, elevation: 4043 },
-            { id: 'mt-owl-head', name: 'Owl\'s Head', x: 35.0344091071748, y: 59.7650966183575, elevation: 4025 },
-            { id: 'mt-galehead', name: 'Galehead', x: 38.53927739874378, y: 53.46400966183575, elevation: 4024 },
-            { id: 'mt-whiteface', name: 'Whiteface', x: 58.955423482216005, y: 90.43599033816425, elevation: 4020 },
-            { id: 'mt-waumbek', name: 'Waumbek', x: 57.04216017600362, y: 18.065458937198066, elevation: 4006 },
-            { id: 'mt-isolation', name: 'Isolation', x: 70.01295395796255, y: 48.9975845410628, elevation: 4004 },
-            { id: 'mt-tecumseh', name: 'Tecumseh', x: 40.89439694748142, y: 85.52572463768117, elevation: 4003 }
-        ];
+    async saveMountain(mountain) {
+        try {
+            // Convert mountains Map to array for GitHub storage
+            const mountainsArray = Array.from(this.mountains.values());
+            await this.githubStorage.writeMountains(mountainsArray);
+        } catch (error) {
+            console.error('Error saving mountain:', error);
+        }
+    }
 
-        defaultMountains.forEach(mountain => {
-            this.mountains.set(mountain.id, {
-                ...mountain,
-                hikes: []
+    async saveHike(hike) {
+        try {
+            // Collect all hikes from all mountains
+            const allHikes = [];
+            this.mountains.forEach(mountain => {
+                if (mountain.hikes) {
+                    mountain.hikes.forEach(h => {
+                        allHikes.push({
+                            id: h.id,
+                            mountain_id: h.mountainId,
+                            hike_date: h.date,
+                            companions: h.companions,
+                            notes: h.notes,
+                            completed: h.completed
+                        });
+                    });
+                }
             });
-        });
-        
-        this.saveMountains();
+            
+            await this.githubStorage.writeHikes(allHikes);
+        } catch (error) {
+            console.error('Error saving hike:', error);
+        }
+    }
+
+    async deleteHike(hikeId) {
+        try {
+            // Remove hike from local data
+            this.mountains.forEach(mountain => {
+                if (mountain.hikes) {
+                    mountain.hikes = mountain.hikes.filter(h => h.id !== hikeId);
+                }
+            });
+            
+            // Save updated hikes to GitHub
+            await this.saveHike({});
+        } catch (error) {
+            console.error('Error deleting hike:', error);
+        }
+    }
+
+    async deleteMountain(mountainId) {
+        try {
+            // Remove mountain from local data
+            this.mountains.delete(mountainId);
+            
+            // Save updated mountains to GitHub
+            await this.saveMountain({});
+        } catch (error) {
+            console.error('Error deleting mountain:', error);
+        }
     }
 
     renderMountains() {
@@ -400,7 +473,7 @@ class NH4000Map {
         this.currentMountain = mountain;
         
         // Check if this is a custom mountain (not one of the defaults)
-        const isCustomMountain = mountain.id.startsWith('custom-');
+        const isCustomMountain = mountain.is_custom;
         
         // Create title with mountain name, height, and edit/delete buttons for custom mountains
         let titleHTML = mountain.name;
@@ -437,7 +510,7 @@ class NH4000Map {
             <div class="hike-entry ${hike.completed ? 'completed' : 'pending'}">
                 <div class="hike-actions">
                     <button class="edit-btn" onclick="window.nh4000Map.editHike('${mountain.id}', ${index})">✏️</button>
-                    <button class="delete-btn" onclick="window.nh4000Map.deleteHike('${mountain.id}', ${index})">🗑️</button>
+                    <button class="delete-btn" onclick="window.nh4000Map.deleteHike('${hike.id})">🗑️</button>
                 </div>
                 <h4>${hike.date || 'No date'} - ${hike.completed ? '✅ Completed' : '⏳ Pending'}</h4>
                 ${hike.companions ? `<div class="hike-companions">👥 ${hike.companions}</div>` : ''}
@@ -464,9 +537,9 @@ class NH4000Map {
             if (hikeIndex !== null) {
                 const hike = this.currentMountain.hikes[hikeIndex];
                 this.hikeDateInput.value = hike.date || '';
-                this.hikeCompanionsInput.value = hike.companions || '';
-                this.hikeNotesInput.value = hike.notes || '';
-                this.hikeCompletedInput.checked = hike.completed;
+                this.companionsInput.value = hike.companions || '';
+                this.notesInput.value = hike.notes || '';
+                this.completedCheckbox.checked = hike.completed;
                 document.getElementById('modal-title').textContent = 'Edit Hike';
             } else {
                 this.clearHikeForm();
@@ -487,12 +560,12 @@ class NH4000Map {
     clearHikeForm() {
         this.mountainNameInput.value = '';
         this.hikeDateInput.value = '';
-        this.hikeCompanionsInput.value = '';
-        this.hikeNotesInput.value = '';
-        this.hikeCompletedInput.checked = false;
+        this.companionsInput.value = '';
+        this.notesInput.value = '';
+        this.completedCheckbox.checked = false;
     }
 
-    handleHikeSubmit(e) {
+    async handleHikeSubmit(e) {
         e.preventDefault();
         
         // Check if we're creating a new mountain
@@ -505,7 +578,7 @@ class NH4000Map {
             }
             
             // Find the custom mountain we just created
-            const customMountains = Array.from(this.mountains.values()).filter(m => m.id.startsWith('custom-'));
+            const customMountains = Array.from(this.mountains.values()).filter(m => m.is_custom);
             const latestCustomMountain = customMountains[customMountains.length - 1];
             
             if (latestCustomMountain) {
@@ -519,10 +592,10 @@ class NH4000Map {
         const hikeData = {
             mountainId: this.currentMountain.id,
             date: this.hikeDateInput.value,
-            companions: this.hikeCompanionsInput.value,
-            notes: this.hikeNotesInput.value,
-            completed: this.hikeCompletedInput.checked,
-            id: Date.now().toString()
+            companions: this.companionsInput.value,
+            notes: this.notesInput.value,
+            completed: this.completedCheckbox.checked,
+            id: this.editingHikeId !== null ? this.currentMountain.hikes[this.editingHikeId].id : Date.now().toString()
         };
         
         if (this.editingHikeId !== null) {
@@ -536,9 +609,9 @@ class NH4000Map {
             this.currentMountain.hikes.push(hikeData);
         }
         
-        this.saveMountains();
-        this.saveHikes();
-        this.updatePinStatus();
+        // Save to API
+        await this.saveHike(hikeData);
+        this.renderMountains();
         this.closeModals();
         
         // Refresh details if open
@@ -551,14 +624,17 @@ class NH4000Map {
         this.openHikeModal(mountainId, hikeIndex);
     }
 
-    deleteHike(mountainId, hikeIndex) {
+    async deleteHike(mountainId, hikeIndex) {
         if (confirm('Are you sure you want to delete this hike?')) {
             const mountain = this.mountains.get(mountainId);
-            mountain.hikes.splice(hikeIndex, 1);
+            const hike = mountain.hikes[hikeIndex];
             
-            this.saveMountains();
-            this.saveHikes();
-            this.updatePinStatus();
+            // Delete from API
+            await this.deleteHike(hike.id);
+            
+            // Remove from local data
+            mountain.hikes.splice(hikeIndex, 1);
+            this.renderMountains();
             this.renderHikeList(mountain);
         }
     }
@@ -579,13 +655,16 @@ class NH4000Map {
         this.hikeModal.style.display = 'block';
     }
 
-    deleteMountain(mountainId) {
+    async deleteMountain(mountainId) {
         const mountain = this.mountains.get(mountainId);
         if (!mountain) return;
         
         if (confirm(`Are you sure you want to delete "${mountain.name}"? This will also delete all associated hikes.`)) {
+            // Delete from API
+            await this.deleteMountain(mountainId);
+            
+            // Remove from local data
             this.mountains.delete(mountainId);
-            this.saveMountains();
             this.renderMountains();
             this.closeModals();
         }
@@ -620,11 +699,11 @@ class NH4000Map {
             x: x,
             y: y,
             elevation: 4000,
+            is_custom: true,
             hikes: []
         };
         
         this.mountains.set(mountainId, newMountain);
-        this.saveMountains();
         this.renderMountains();
         
         // Open modal for creating new mountain
@@ -834,20 +913,7 @@ class NH4000Map {
         this.editingHikeId = null;
     }
 
-    saveMountains() {
-        const mountainsArray = Array.from(this.mountains.entries());
-        localStorage.setItem('nh4000_mountains', JSON.stringify(mountainsArray));
-    }
-
-    saveHikes() {
-        const allHikes = [];
-        this.mountains.forEach(mountain => {
-            if (mountain.hikes) {
-                allHikes.push(...mountain.hikes);
-            }
-        });
-        localStorage.setItem('nh4000_hikes', JSON.stringify(allHikes));
-    }
+    // Note: Data is now saved via API calls instead of localStorage
 
     hideInfoPanel() {
         console.log('hideInfoPanel');

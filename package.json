@@ -1,42 +1,22 @@
 {
-  "name": "nh-4000-footers-tracker",
+  "name": "nh-4000-tracker",
   "version": "1.0.0",
-  "description": "Interactive web application for tracking hikes on New Hampshire's 48 4000-foot mountains",
+  "description": "New Hampshire 4000-footers hiking tracker with GitHub storage",
   "main": "index.html",
   "scripts": {
-    "start": "live-server --port=8000 --open=/index.html --watch=.",
-    "dev": "live-server --port=8000 --open=/index.html --watch=. --entry-file=index.html",
-    "lint": "eslint . --ext .js",
-    "lint:fix": "eslint . --ext .js --fix",
-    "format": "prettier --write \"**/*.{js,html,css,json,md}\"",
+    "dev": "live-server --port=3000 --open=/",
+    "build": "echo 'No build step needed for static site'",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
     "serve": "python3 -m http.server 8000"
   },
-  "keywords": [
-    "new-hampshire",
-    "4000-footers",
-    "hiking",
-    "mountains",
-    "tracker",
-    "interactive-map"
-  ],
-  "author": "Your Name",
-  "license": "MIT",
   "devDependencies": {
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.1.3",
     "live-server": "^1.2.2",
-    "prettier": "^3.2.5"
+    "eslint": "^8.55.0",
+    "prettier": "^3.1.0"
   },
-  "engines": {
-    "node": ">=16.0.0"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/yourusername/nh-4000-footers-tracker.git"
-  },
-  "bugs": {
-    "url": "https://github.com/yourusername/nh-4000-footers-tracker/issues"
-  },
-  "homepage": "https://github.com/yourusername/nh-4000-footers-tracker#readme"
+  "keywords": ["hiking", "mountains", "new-hampshire", "4000-footers", "github-storage"],
+  "author": "Your Name",
+  "license": "MIT"
 } 

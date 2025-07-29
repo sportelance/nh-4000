@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Export NH 4000 Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .export-section {
+            background: #f5f5f5;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        pre {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .copy-btn {
+            background: #28a745;
+        }
+        .copy-btn:hover {
+            background: #1e7e34;
+        }
+    </style>
+</head>
+<body>
+    <h1>Export NH 4000-Footers Data</h1>
+    <p>This page will help you export your current localStorage data for import into Neon PostgreSQL.</p>
+
+    <div class="export-section">
+        <h2>Mountains Data</h2>
+        <button onclick="exportMountains()">Export Mountains</button>
+        <button class="copy-btn" onclick="copyMountains()">Copy to Clipboard</button>
+        <pre id="mountains-output">Click "Export Mountains" to see your data</pre>
+    </div>
+
+    <div class="export-section">
+        <h2>Hikes Data</h2>
+        <button onclick="exportHikes()">Export Hikes</button>
+        <button class="copy-btn" onclick="copyHikes()">Copy to Clipboard</button>
+        <pre id="hikes-output">Click "Export Hikes" to see your data</pre>
+    </div>
+
+    <div class="export-section">
+        <h2>All Data (Combined)</h2>
+        <button onclick="exportAll()">Export All Data</button>
+        <button class="copy-btn" onclick="copyAll()">Copy to Clipboard</button>
+        <pre id="all-output">Click "Export All Data" to see your data</pre>
+    </div>
+
+    <div class="export-section">
+        <h2>SQL Insert Statements</h2>
+        <p>This will generate SQL INSERT statements you can run directly in Neon:</p>
+        <button onclick="generateSQL()">Generate SQL</button>
+        <button class="copy-btn" onclick="copySQL()">Copy SQL to Clipboard</button>
+        <pre id="sql-output">Click "Generate SQL" to create INSERT statements</pre>
+    </div>
+
+    <script>
+        function exportMountains() {
+            const mountains = localStorage.getItem('nh4000_mountains');
+            const output = document.getElementById('mountains-output');
+            
+            if (mountains) {
+                const parsed = JSON.parse(mountains);
+                output.textContent = JSON.stringify(parsed, null, 2);
+            } else {
+                output.textContent = 'No mountains data found in localStorage';
+            }
+        }
+
+        function exportHikes() {
+            const hikes = localStorage.getItem('nh4000_hikes');
+            const output = document.getElementById('hikes-output');
+            
+            if (hikes) {
+                const parsed = JSON.parse(hikes);
+                output.textContent = JSON.stringify(parsed, null, 2);
+            } else {
+                output.textContent = 'No hikes data found in localStorage';
+            }
+        }
+
+        function exportAll() {
+            const mountains = localStorage.getItem('nh4000_mountains');
+            const hikes = localStorage.getItem('nh4000_hikes');
+            const output = document.getElementById('all-output');
+            
+            const data = {
+                mountains: mountains ? JSON.parse(mountains) : null,
+                hikes: hikes ? JSON.parse(hikes) : null,
+                exported_at: new Date().toISOString()
+            };
+            
+            output.textContent = JSON.stringify(data, null, 2);
+        }
+
+        function generateSQL() {
+            const mountains = localStorage.getItem('nh4000_mountains');
+            const hikes = localStorage.getItem('nh4000_hikes');
+            const output = document.getElementById('sql-output');
+            
+            let sql = '-- NH 4000-Footers Data Import\n';
+            sql += '-- Generated on: ' + new Date().toISOString() + '\n\n';
+            
+            if (mountains) {
+                const mountainsData = JSON.parse(mountains);
+                sql += '-- Mountains\n';
+                mountainsData.forEach(([id, mountain]) => {
+                    sql += `INSERT INTO mountains (id, name, elevation, x_coordinate, y_coordinate, is_custom) VALUES ('${mountain.id}', '${mountain.name}', ${mountain.elevation}, ${mountain.x}, ${mountain.y}, ${mountain.id.startsWith('custom-')});\n`;
+                });
+                sql += '\n';
+            }
+            
+            if (hikes) {
+                const hikesData = JSON.parse(hikes);
+                sql += '-- Hikes\n';
+                hikesData.forEach(hike => {
+                    const date = hike.date ? `'${hike.date}'` : 'NULL';
+                    const companions = hike.companions ? `'${hike.companions.replace(/'/g, "''")}'` : 'NULL';
+                    const notes = hike.notes ? `'${hike.notes.replace(/'/g, "''")}'` : 'NULL';
+                    sql += `INSERT INTO hikes (id, mountain_id, user_id, hike_date, companions, notes, completed) VALUES ('${hike.id}', '${hike.mountainId}', 'default_user', ${date}, ${companions}, ${notes}, ${hike.completed});\n`;
+                });
+            }
+            
+            output.textContent = sql;
+        }
+
+        function copyMountains() {
+            copyToClipboard(document.getElementById('mountains-output').textContent);
+        }
+
+        function copyHikes() {
+            copyToClipboard(document.getElementById('hikes-output').textContent);
+        }
+
+        function copyAll() {
+            copyToClipboard(document.getElementById('all-output').textContent);
+        }
+
+        function copySQL() {
+            copyToClipboard(document.getElementById('sql-output').textContent);
+        }
+
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copied to clipboard!');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = text;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Copied to clipboard!');
+            });
+        }
+
+        // Auto-export on page load
+        window.onload = function() {
+            exportMountains();
+            exportHikes();
+            exportAll();
+        };
+    </script>
+</body>
+</html> 
