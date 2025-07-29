@@ -4,6 +4,7 @@ class NH4000Map {
         // Initialize data structures
         this.mountains = new Map();
         this.currentMountain = null;
+        this.editingHikeIndex = null;
         this.isDragging = false;
         this.dragStart = { x: 0, y: 0 };
         this.zoomLevel = 1;
@@ -28,6 +29,7 @@ class NH4000Map {
         this.zoomInBtn = document.getElementById('zoom-in');
         this.zoomOutBtn = document.getElementById('zoom-out');
         this.resetBtn = document.getElementById('reset-zoom');
+        this.publishBtn = document.getElementById('publish-changes');
         this.hikeModal = document.getElementById('hike-modal');
         this.detailsModal = document.getElementById('details-modal');
         this.infoPanel = document.getElementById('info-panel');
@@ -47,6 +49,7 @@ class NH4000Map {
         if (this.zoomInBtn) this.zoomInBtn.addEventListener('click', () => this.zoomIn());
         if (this.zoomOutBtn) this.zoomOutBtn.addEventListener('click', () => this.zoomOut());
         if (this.resetBtn) this.resetBtn.addEventListener('click', () => this.resetZoom());
+        if (this.publishBtn) this.publishBtn.addEventListener('click', () => this.publishChanges());
         
         // Map interactions (mouse)
         if (this.mapWrapper) {
@@ -366,18 +369,23 @@ class NH4000Map {
         }
     }
 
-    async saveMountain(mountain) {
+    async saveMountain(mountain, publishToGitHub = false) {
         // Save to local memory first (immediate access)
         this.mountains.set(mountain.id, mountain);
         
         // Save to localStorage as backup
         this.saveToLocalStorage();
         
-        // Save to GitHub for persistence
-        try {
-            await this.githubStorage.writeMountains(Array.from(this.mountains.values()));
-        } catch (error) {
-            console.error('Failed to save to GitHub, but data is saved locally:', error);
+        // Only save to GitHub if explicitly requested
+        if (publishToGitHub) {
+            try {
+                await this.githubStorage.writeMountains(Array.from(this.mountains.values()));
+                console.log('✅ Changes published to GitHub');
+            } catch (error) {
+                console.error('Failed to save to GitHub, but data is saved locally:', error);
+            }
+        } else {
+            console.log('💾 Changes saved locally (not published)');
         }
     }
 
@@ -386,7 +394,7 @@ class NH4000Map {
         if (mountain) {
             if (!mountain.hikes) mountain.hikes = [];
             mountain.hikes.push(hike);
-            await this.saveMountain(mountain);
+            await this.saveMountain(mountain, false); // Don't publish to GitHub immediately
         }
     }
 
@@ -679,23 +687,48 @@ class NH4000Map {
             await this.saveMountain(mountain);
         }
         
-        // Create hike
-        const hike = {
-            id: 'hike-' + Date.now(),
-            mountainId: mountain.id,
-            date: hikeDate,
-            companions: companions,
-            notes: notes,
-            completed: completed
-        };
+        // Check if we're editing an existing hike
+        const modalTitle = document.getElementById('modal-title').textContent;
+        const isEditing = modalTitle === 'Edit Hike';
         
-        await this.saveHike(hike);
+        if (isEditing && this.currentMountain && this.editingHikeIndex !== null) {
+            // Update existing hike
+            const existingHike = this.currentMountain.hikes[this.editingHikeIndex];
+            if (existingHike) {
+                existingHike.date = hikeDate;
+                existingHike.companions = companions;
+                existingHike.notes = notes;
+                existingHike.completed = completed;
+                
+                await this.saveMountain(mountain, false); // Don't publish to GitHub immediately
+            }
+        } else {
+            // Create new hike
+            const hike = {
+                id: 'hike-' + Date.now(),
+                mountainId: mountain.id,
+                date: hikeDate,
+                companions: companions,
+                notes: notes,
+                completed: completed
+            };
+            
+            await this.saveHike(hike);
+        }
         
         this.closeModals();
         this.renderMountains();
+        
+        // Reset editing state
+        this.editingHikeIndex = null;
     }
 
     editHike(mountainId, hikeIndex) {
+        // Close the details modal first
+        this.closeModals();
+        // Set the editing index
+        this.editingHikeIndex = hikeIndex;
+        // Then open the hike modal for editing
         this.openHikeModal(mountainId, hikeIndex);
     }
 
@@ -1001,6 +1034,50 @@ class NH4000Map {
             startY = 0;
             isSwiping = false;
         });
+    }
+
+    async publishChanges() {
+        if (!this.publishBtn) return;
+        
+        // Show publishing state
+        this.publishBtn.classList.add('publishing');
+        this.publishBtn.textContent = '⏳';
+        this.publishBtn.title = 'Publishing...';
+        
+        try {
+            // Publish all mountains and hikes to GitHub
+            await this.githubStorage.writeMountains(Array.from(this.mountains?.values() || []));
+            await this.githubStorage.writeHikes(Array.from(this.hikes?.values() || []));
+            
+            // Show success state
+            this.publishBtn.classList.remove('publishing');
+            this.publishBtn.classList.add('published');
+            this.publishBtn.textContent = '✅';
+            this.publishBtn.title = 'Changes published!';
+            
+            console.log('✅ All changes published to GitHub successfully!');
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                this.publishBtn.classList.remove('published');
+                this.publishBtn.textContent = '📤';
+                this.publishBtn.title = 'Publish changes to GitHub';
+            }, 3000);
+            
+        } catch (error) {
+            console.error('❌ Failed to publish changes:', error);
+            
+            // Show error state
+            this.publishBtn.classList.remove('publishing');
+            this.publishBtn.textContent = '❌';
+            this.publishBtn.title = 'Publish failed - try again';
+            
+            // Reset button after 3 seconds
+            setTimeout(() => {
+                this.publishBtn.textContent = '📤';
+                this.publishBtn.title = 'Publish changes to GitHub';
+            }, 3000);
+        }
     }
 }
 
