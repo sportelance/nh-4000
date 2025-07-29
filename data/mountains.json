@@ -426,7 +426,16 @@
     "y": 57.94685990338164,
     "elevation": 4100,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756669950",
+        "mountainId": "mt-cannon",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-hale",
