@@ -76,7 +76,16 @@
     "y": 43.23393719806763,
     "elevation": 5372,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756631015",
+        "mountainId": "mt-monroe",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-madison",
