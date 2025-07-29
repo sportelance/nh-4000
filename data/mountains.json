@@ -339,7 +339,16 @@
     "y": 48.76545893719807,
     "elevation": 4054,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753758155441",
+        "mountainId": "mt-hale",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-jackson",
