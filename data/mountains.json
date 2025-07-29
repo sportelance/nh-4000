@@ -120,7 +120,16 @@
     "y": 57.44987922705314,
     "elevation": 5260,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756697073",
+        "mountainId": "mt-lafayette",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-lincoln",
