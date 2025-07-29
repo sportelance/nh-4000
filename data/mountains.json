@@ -33,7 +33,16 @@
     "y": 36.05869565217391,
     "elevation": 5712,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756618215",
+        "mountainId": "mt-jefferson",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-monroe",
