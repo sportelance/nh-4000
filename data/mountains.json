@@ -596,6 +596,15 @@
     "y": 85.52572463768117,
     "elevation": 4003,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756845681",
+        "mountainId": "mt-tecumseh",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   }
 ]
