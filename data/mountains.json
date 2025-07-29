@@ -156,7 +156,16 @@
     "y": 77.03055555555555,
     "elevation": 4802,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756665446",
+        "mountainId": "mt-moosilauke",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-eisenhower",
