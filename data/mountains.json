@@ -51,7 +51,16 @@
     "y": 32.53683574879227,
     "elevation": 5367,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753749765879",
+        "mountainId": "mt-madison",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-lafayette",
