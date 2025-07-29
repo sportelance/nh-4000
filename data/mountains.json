@@ -6,7 +6,16 @@
     "y": 41.0274154589372,
     "elevation": 6288,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756614065",
+        "mountainId": "mt-washington",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-adams",
@@ -15,7 +24,24 @@
     "y": 33.77838164251208,
     "elevation": 5774,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756621617",
+        "mountainId": "mt-adams",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753756622533",
+        "mountainId": "mt-adams",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-jefferson",
@@ -24,7 +50,24 @@
     "y": 36.05869565217391,
     "elevation": 5712,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756618215",
+        "mountainId": "mt-jefferson",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753756618849",
+        "mountainId": "mt-jefferson",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-monroe",
@@ -33,7 +76,24 @@
     "y": 43.23393719806763,
     "elevation": 5372,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756631015",
+        "mountainId": "mt-monroe",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753756632006",
+        "mountainId": "mt-monroe",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-madison",
@@ -42,7 +102,16 @@
     "y": 32.53683574879227,
     "elevation": 5367,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756626026",
+        "mountainId": "mt-madison",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-lafayette",
@@ -51,7 +120,16 @@
     "y": 57.44987922705314,
     "elevation": 5260,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756697073",
+        "mountainId": "mt-lafayette",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-lincoln",
@@ -60,7 +138,16 @@
     "y": 59.373429951690824,
     "elevation": 5089,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756701970",
+        "mountainId": "mt-lincoln",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-south-twin",
@@ -87,7 +174,16 @@
     "y": 77.03055555555555,
     "elevation": 4802,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756665446",
+        "mountainId": "mt-moosilauke",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-eisenhower",
@@ -96,7 +192,16 @@
     "y": 45.856280193236714,
     "elevation": 4760,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756643717",
+        "mountainId": "mt-eisenhower",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-north-twin",
@@ -204,7 +309,16 @@
     "y": 62.793719806763285,
     "elevation": 4358,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756678433",
+        "mountainId": "mt-south-kinsman",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-field",
@@ -249,7 +363,16 @@
     "y": 47.907850241545894,
     "elevation": 4310,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756647011",
+        "mountainId": "mt-pierce",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-north-kinsman",
@@ -258,7 +381,16 @@
     "y": 60.21086956521739,
     "elevation": 4293,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756673487",
+        "mountainId": "mt-north-kinsman",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-willey",
@@ -330,7 +462,16 @@
     "y": 57.94685990338164,
     "elevation": 4100,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756669950",
+        "mountainId": "mt-cannon",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-hale",
@@ -348,7 +489,16 @@
     "y": 50.9487922705314,
     "elevation": 4052,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756650191",
+        "mountainId": "mt-jackson",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-tom",
@@ -420,7 +570,24 @@
     "y": 48.9975845410628,
     "elevation": 4004,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756637947",
+        "mountainId": "mt-isolation",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753756638794",
+        "mountainId": "mt-isolation",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-tecumseh",
@@ -429,6 +596,15 @@
     "y": 85.52572463768117,
     "elevation": 4003,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756845681",
+        "mountainId": "mt-tecumseh",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   }
 ]
