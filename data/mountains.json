@@ -354,7 +354,16 @@
     "y": 60.21086956521739,
     "elevation": 4293,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753756673487",
+        "mountainId": "mt-north-kinsman",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-willey",
