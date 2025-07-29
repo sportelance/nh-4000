@@ -42,7 +42,16 @@
     "y": 32.53683574879227,
     "elevation": 5367,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753749457911",
+        "mountainId": "mt-madison",
+        "date": "",
+        "companions": "",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-lafayette",
@@ -249,16 +258,7 @@
     "y": 47.907850241545894,
     "elevation": 4310,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753749346538",
-        "mountainId": "mt-pierce",
-        "date": "",
-        "companions": "",
-        "notes": "",
-        "completed": true
-      }
-    ]
+    "hikes": []
   },
   {
     "id": "mt-north-kinsman",
