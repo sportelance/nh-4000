@@ -6,7 +6,32 @@
     "y": 41.0274154589372,
     "elevation": 6288,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916520754",
+        "mountainId": "mt-washington",
+        "date": "2022-08-14",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916679182",
+        "mountainId": "mt-washington",
+        "date": "2018-07-14",
+        "companions": "Sam, Justin, Maddy, Ally, Tristan, Cole, Tushar",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916747911",
+        "mountainId": "mt-washington",
+        "date": "2016-08-06",
+        "companions": "Sam, Rich, Tom, Boy Scouts",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-adams",
@@ -15,7 +40,24 @@
     "y": 33.77838164251208,
     "elevation": 5774,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916513558",
+        "mountainId": "mt-adams",
+        "date": "2022-08-14",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916651707",
+        "mountainId": "mt-adams",
+        "date": "2018-07-14",
+        "companions": "Sam, Justin, Maddy, Ally",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-jefferson",
@@ -24,7 +66,24 @@
     "y": 36.05869565217391,
     "elevation": 5712,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916516790",
+        "mountainId": "mt-jefferson",
+        "date": "2022-08-14",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916658167",
+        "mountainId": "mt-jefferson",
+        "date": "2018-07-14",
+        "companions": "Sam, Justin, Maddy, Ally",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-monroe",
@@ -33,7 +92,16 @@
     "y": 43.23393719806763,
     "elevation": 5372,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916528640",
+        "mountainId": "mt-monroe",
+        "date": "2022-08-15",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-madison",
@@ -42,7 +110,24 @@
     "y": 32.53683574879227,
     "elevation": 5367,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916509185",
+        "mountainId": "mt-madison",
+        "date": "2022-08-14",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916647421",
+        "mountainId": "mt-madison",
+        "date": "2018-07-14",
+        "companions": "Sam, Justin, Maddy, Ally",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-lafayette",
@@ -51,7 +136,24 @@
     "y": 57.44987922705314,
     "elevation": 5260,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753915930079",
+        "mountainId": "mt-lafayette",
+        "date": "2016-08-04",
+        "companions": "Rich, Tom, Sam, Tom K, Brendan",
+        "notes": "Sam's first hike in NH",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916008544",
+        "mountainId": "mt-lafayette",
+        "date": "2018-06-03",
+        "companions": "Sam, Sarah",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-lincoln",
@@ -60,7 +162,24 @@
     "y": 59.373429951690824,
     "elevation": 5089,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753915943603",
+        "mountainId": "mt-lincoln",
+        "date": "2016-08-04",
+        "companions": "Rich, Tom, Sam, Tom K, Brendan",
+        "notes": "Sam's first hike in NH",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916013856",
+        "mountainId": "mt-lincoln",
+        "date": "2018-06-03",
+        "companions": "Sam, Sarah",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-south-twin",
@@ -105,7 +224,16 @@
     "y": 45.856280193236714,
     "elevation": 4760,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916532006",
+        "mountainId": "mt-eisenhower",
+        "date": "2022-08-15",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-north-twin",
@@ -168,7 +296,24 @@
     "y": 63.54975845410629,
     "elevation": 4459,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753915950022",
+        "mountainId": "mt-liberty",
+        "date": "2016-08-04",
+        "companions": "Rich, Tom, Sam, Tom K, Brendan",
+        "notes": "Sam's first hike in NH",
+        "completed": true
+      },
+      {
+        "id": "hike-1753916017646",
+        "mountainId": "mt-liberty",
+        "date": "2018-06-03",
+        "companions": "Sam, Sarah",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-south-carter",
@@ -240,7 +385,16 @@
     "y": 80.84746376811594,
     "elevation": 4340,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916350146",
+        "mountainId": "mt-osceola",
+        "date": "2025-05-17",
+        "companions": "Sam, Tom, T.C., Rich",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-flume",
@@ -267,7 +421,16 @@
     "y": 47.907850241545894,
     "elevation": 4310,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916535107",
+        "mountainId": "mt-pierce",
+        "date": "2022-08-15",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-north-kinsman",
@@ -339,7 +502,16 @@
     "y": 79.16376811594202,
     "elevation": 4156,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916364266",
+        "mountainId": "mt-east-osceola",
+        "date": "2025-05-17",
+        "companions": "Sam, Tom, T.C., Rich",
+        "notes": "Too slick for Dicky",
+        "completed": false
+      }
+    ]
   },
   {
     "id": "mt-middle-tripyramid",
@@ -392,7 +564,16 @@
     "y": 50.9487922705314,
     "elevation": 4052,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916538056",
+        "mountainId": "mt-jackson",
+        "date": "2022-08-15",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-tom",
@@ -464,7 +645,16 @@
     "y": 48.9975845410628,
     "elevation": 4004,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916575869",
+        "mountainId": "mt-isolation",
+        "date": "2025-09-14",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-tecumseh",
@@ -473,18 +663,20 @@
     "y": 85.52572463768117,
     "elevation": 4003,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916343010",
+        "mountainId": "mt-tecumseh",
+        "date": "2025-05-17",
+        "companions": "Sam, Tom, T.C., Rich",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
-  [
-    "mt-washington",
-    {
-      "id": "mt-washington",
-      "name": "Washington",
-      "x": 71.22063104453298,
-      "y": 41.0274154589372,
-      "elevation": 6288,
-      "is_custom": false,
-      "hikes": []
-    }
-  ]
+  {
+    "x": null,
+    "y": null,
+    "hikes": []
+  }
 ]
