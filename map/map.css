@@ -146,7 +146,8 @@ body {
     overflow: hidden;
 }
 
-.info-panel {
+/* Replace the .info-panel class with #info-panel ID */
+#info-panel {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -156,13 +157,12 @@ body {
     padding: 20px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     max-height: 400px;
-    visibility: hidden;
     overflow-y: auto;
     transition: transform 0.3s ease, opacity 0.3s ease;
     transform: translateX(0);
 }
 
-.info-panel h3 {
+#info-panel h3 {
     margin-bottom: 15px;
     color: #2c3e50;
     border-bottom: 2px solid #3498db;
@@ -185,7 +185,8 @@ body {
     line-height: 1.4;
 }
 
-.close-panel {
+/* Replace the .close-panel class with #close-panel ID */
+#close-panel {
     position: absolute;
     top: 10px;
     right: 10px;
@@ -194,7 +195,6 @@ body {
     font-size: 24px;
     color: #666;
     cursor: pointer;
-    display: none;
     width: 30px;
     height: 30px;
     display: flex;
@@ -204,12 +204,13 @@ body {
     transition: all 0.3s ease;
 }
 
-.close-panel:hover {
+#close-panel:hover {
     background: rgba(0, 0, 0, 0.1);
     color: #333;
 }
 
-.alert.hidden {
+/* Add hidden state for info panel */
+#info-panel.hidden {
     display: none;
 }
 
@@ -503,7 +504,7 @@ body {
         touch-action: none;
     }
     
-    .info-panel {
+    #info-panel {
         position: fixed;
         bottom: env(safe-area-inset-bottom, 20px);
         left: env(safe-area-inset-left, 20px);
@@ -550,6 +551,15 @@ body {
         pointer-events: none;
         z-index: -1;
     }
+
+    /* Update mobile styles to use ID selectors */
+    #info-panel {
+        width: calc(100% - 40px);
+        right: 20px;
+        left: 20px;
+        max-height: 300px;
+        font-size: 14px;
+    }
 }
 
 /* iOS Safari specific fixes */
@@ -565,14 +575,14 @@ body {
 
 /* Zoom level responsive styles */
 .map-background[data-zoom="1"] .mountain-pin .label {
-    font-size: 10px;
-    max-width: 36px;
+    font-size: 8px;
+    max-width: 24px;
 }
 
 .map-background[data-zoom="1"] .mountain-pin .triangle {
-    border-left:7px solid transparent;
-    border-right: 7px solid transparent;
-    border-bottom: 12px solid currentColor;
+    border-left:5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid currentColor;
 }
 
 .map-background[data-zoom="2"] .mountain-pin .label {

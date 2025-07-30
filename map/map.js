@@ -42,6 +42,8 @@ class NH4000Map {
         this.notesInput = document.getElementById('hike-notes');
         this.completedCheckbox = document.getElementById('hike-completed');
         this.hikeForm = document.getElementById('hike-form');
+        this.mountainsInput = document.getElementById('mountains-input');
+        this.autocompleteDropdown = document.getElementById('mountains-autocomplete');
     }
 
     setupEventListeners() {
@@ -109,6 +111,9 @@ class NH4000Map {
 
         // Swipe to dismiss info panel
         this.setupSwipeToDismiss();
+
+        // Setup autocomplete after other event listeners
+        this.setupAutocomplete();
     }
 
     setupTouchHandling() {
@@ -543,20 +548,20 @@ class NH4000Map {
     openHikeModal(mountainId = null, hikeIndex = null) {
         const modal = document.getElementById('hike-modal');
         const title = document.getElementById('modal-title');
-        const mountainNameInput = document.getElementById('mountain-name');
+        const mountainsInput = document.getElementById('mountains-input');
         
         if (mountainId) {
             const mountain = this.mountains.get(mountainId);
             if (mountain) {
                 title.textContent = 'Add Hike';
-                mountainNameInput.value = mountain.name;
-                mountainNameInput.disabled = true;
+                mountainsInput.value = mountain.name;
+                mountainsInput.disabled = false;
                 this.currentMountain = mountain;
             }
         } else {
             title.textContent = 'Add New Mountain';
-            mountainNameInput.value = '';
-            mountainNameInput.disabled = false;
+            mountainsInput.value = '';
+            mountainsInput.disabled = false;
             this.currentMountain = null;
         }
         
@@ -564,6 +569,8 @@ class NH4000Map {
             // Editing existing hike
             const hike = this.currentMountain.hikes[hikeIndex];
             title.textContent = 'Edit Hike';
+            mountainsInput.value = this.currentMountain.name;
+            mountainsInput.disabled = true;
             document.getElementById('hike-date').value = hike.date || '';
             document.getElementById('hike-companions').value = hike.companions || '';
             document.getElementById('hike-notes').value = hike.notes || '';
@@ -577,6 +584,7 @@ class NH4000Map {
     }
 
     clearHikeForm() {
+        document.getElementById('mountains-input').value = '';
         document.getElementById('hike-date').value = '';
         document.getElementById('hike-companions').value = '';
         document.getElementById('hike-notes').value = '';
@@ -586,35 +594,32 @@ class NH4000Map {
     async handleHikeSubmit(e) {
         e.preventDefault();
         
-        const mountainName = document.getElementById('mountain-name').value.trim();
+        const mountainsText = document.getElementById('mountains-input').value.trim();
         const hikeDate = document.getElementById('hike-date').value;
         const companions = document.getElementById('hike-companions').value.trim();
         const notes = document.getElementById('hike-notes').value.trim();
         const completed = document.getElementById('hike-completed').checked;
         
-        if (!mountainName) {
-            alert('Please enter a mountain name');
+        if (!mountainsText) {
+            alert('Please enter mountain names');
             return;
         }
         
-        let mountain;
+        // Parse mountain names and find existing mountains
+        const mountainNames = mountainsText.split(',').map(name => name.trim()).filter(name => name);
+        const existingMountains = [];
         
-        if (this.currentMountain) {
-            // Adding hike to existing mountain
-            mountain = this.currentMountain;
-        } else {
-            // Creating new mountain
-            const mountainId = 'custom-' + Date.now();
-            mountain = {
-                id: mountainId,
-                name: mountainName,
-                x: 50, // Default position
-                y: 50,
-                elevation: 4000,
-                is_custom: true,
-                hikes: []
-            };
-            await this.saveMountain(mountain);
+        for (const mountainName of mountainNames) {
+            const mountain = Array.from(this.mountains.values())
+                .find(m => m.name.toLowerCase() === mountainName.toLowerCase());
+            if (mountain) {
+                existingMountains.push(mountain);
+            }
+        }
+        
+        if (existingMountains.length === 0) {
+            alert('No existing mountains found. Please enter valid mountain names.');
+            return;
         }
         
         // Check if we're editing an existing hike
@@ -622,7 +627,7 @@ class NH4000Map {
         const isEditing = modalTitle === 'Edit Hike';
         
         if (isEditing && this.currentMountain && this.editingHikeIndex !== null) {
-            // Update existing hike
+            // Update existing hike (only for the current mountain)
             const existingHike = this.currentMountain.hikes[this.editingHikeIndex];
             if (existingHike) {
                 existingHike.date = hikeDate;
@@ -630,20 +635,32 @@ class NH4000Map {
                 existingHike.notes = notes;
                 existingHike.completed = completed;
                 
-                await this.saveMountain(mountain, false); // Don't publish to GitHub immediately
+                await this.saveMountain(this.currentMountain, false);
             }
         } else {
-            // Create new hike
-            const hike = {
-                id: 'hike-' + Date.now(),
-                mountainId: mountain.id,
-                date: hikeDate,
-                companions: companions,
-                notes: notes,
-                completed: completed
-            };
+            // Create new hike for multiple mountains
+            const hikeId = 'hike-' + Date.now();
             
-            await this.saveHike(hike);
+            for (const mountain of existingMountains) {
+                const hike = {
+                    id: hikeId + '-' + mountain.id,
+                    mountainId: mountain.id,
+                    date: hikeDate,
+                    companions: companions,
+                    notes: notes,
+                    completed: completed
+                };
+                
+                if (!mountain.hikes) mountain.hikes = [];
+                mountain.hikes.push(hike);
+                await this.saveMountain(mountain, false);
+            }
+            
+            // Show confirmation of how many mountains the hike was applied to
+            if (existingMountains.length > 1) {
+                const mountainNames = existingMountains.map(m => m.name).join(', ');
+                alert(`Hike saved to ${existingMountains.length} mountains: ${mountainNames}`);
+            }
         }
         
         this.closeModals();
@@ -865,7 +882,7 @@ class NH4000Map {
     hideInfoPanel() {
         const infoPanel = document.getElementById('info-panel');
         if (infoPanel) {
-            infoPanel.classList.add('hidden');
+            infoPanel.style.display = 'none';
         }
         
         // Save to localStorage that user has dismissed the info panel
@@ -874,29 +891,25 @@ class NH4000Map {
 
     showInfoPanel() {
         const infoPanel = document.getElementById('info-panel');
-        const closeButton = document.getElementById('close-panel');
-        
         if (infoPanel) {
-            infoPanel.classList.remove('hidden');
-        }
-        
-        if (closeButton) {
-            closeButton.style.visibility = 'visible';
+            infoPanel.style.display = 'block';
         }
     }
 
     shouldShowInfoPanel() {
-        return localStorage.getItem('nh4000_info_dismissed') !== 'true';
+        const status = localStorage.getItem('nh4000_info_dismissed') !== 'true';
+        console.log('shouldShowInfoPanel', status);
+        return status;
     }
 
     initializeInfoPanel() {
         if (this.shouldShowInfoPanel()) {
             this.showInfoPanel();
         } else {
-            // If info panel should be hidden, also hide the close button
-            const closeButton = document.getElementById('close-panel');
-            if (closeButton) {
-                closeButton.style.display = 'none';
+            // If info panel should be hidden, just hide the panel
+            const infoPanel = document.getElementById('info-panel');
+            if (infoPanel) {
+                infoPanel.style.display = 'none';
             }
         }
     }
@@ -998,6 +1011,171 @@ class NH4000Map {
                 this.publishBtn.title = 'Publish changes to GitHub';
             }, 3000);
         }
+    }
+
+    // Add this method to find mountains by name
+    findMountainsByName(mountainNames) {
+        const foundMountains = [];
+        const names = mountainNames.map(name => name.trim().toLowerCase());
+        
+        this.mountains.forEach((mountain, id) => {
+            const mountainNameLower = mountain.name.toLowerCase();
+            if (names.includes(mountainNameLower)) {
+                foundMountains.push(mountain);
+            }
+        });
+        
+        return foundMountains;
+    }
+
+    // Add this method to create mountains if they don't exist
+    async createMountainIfNotExists(mountainName) {
+        const existingMountain = Array.from(this.mountains.values())
+            .find(m => m.name.toLowerCase() === mountainName.trim().toLowerCase());
+        
+        if (existingMountain) {
+            return existingMountain;
+        }
+        
+        // Create new mountain at a default position
+        const mountainId = 'custom-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
+        const mountain = {
+            id: mountainId,
+            name: mountainName.trim(),
+            x: 50, // Default position
+            y: 50,
+            elevation: 4000,
+            is_custom: true,
+            hikes: []
+        };
+        
+        await this.saveMountain(mountain);
+        return mountain;
+    }
+
+    setupAutocomplete() {
+        if (!this.mountainsInput || !this.autocompleteDropdown) return;
+        
+        this.mountainsInput.addEventListener('focus', () => {
+            this.showAutocomplete();
+        });
+        
+        this.mountainsInput.addEventListener('input', () => {
+            this.filterAutocomplete();
+        });
+        
+        this.mountainsInput.addEventListener('keydown', (e) => {
+            this.handleAutocompleteKeydown(e);
+        });
+        
+        // Hide autocomplete when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.mountainsInput.contains(e.target) && !this.autocompleteDropdown.contains(e.target)) {
+                this.hideAutocomplete();
+            }
+        });
+    }
+
+    getAvailableMountains() {
+        return Array.from(this.mountains.values()).map(mountain => mountain.name);
+    }
+
+    showAutocomplete() {
+        const mountains = this.getAvailableMountains();
+        this.autocompleteItems = mountains;
+        this.renderAutocomplete(mountains);
+        this.autocompleteDropdown.style.display = 'block';
+    }
+
+    hideAutocomplete() {
+        this.autocompleteDropdown.style.display = 'none';
+        this.selectedAutocompleteIndex = -1;
+    }
+
+    filterAutocomplete() {
+        const inputValue = this.mountainsInput.value.toLowerCase();
+        const currentMountains = inputValue.split(',').map(name => name.trim());
+        const lastMountain = currentMountains[currentMountains.length - 1] || '';
+        
+        const allMountains = this.getAvailableMountains();
+        const filteredMountains = allMountains.filter(mountain => 
+            mountain.toLowerCase().includes(lastMountain.toLowerCase()) &&
+            !currentMountains.slice(0, -1).includes(mountain)
+        );
+        
+        this.autocompleteItems = filteredMountains;
+        this.renderAutocomplete(filteredMountains);
+        this.autocompleteDropdown.style.display = filteredMountains.length > 0 ? 'block' : 'none';
+    }
+
+    renderAutocomplete(mountains) {
+        this.autocompleteDropdown.innerHTML = mountains.map(mountain => 
+            `<div class="autocomplete-item" data-mountain="${mountain}">${mountain}</div>`
+        ).join('');
+        
+        // Add click handlers to autocomplete items
+        this.autocompleteDropdown.querySelectorAll('.autocomplete-item').forEach((item, index) => {
+            item.addEventListener('click', () => {
+                this.selectAutocompleteItem(item.textContent);
+            });
+            
+            item.addEventListener('mouseenter', () => {
+                this.selectedAutocompleteIndex = index;
+                this.updateAutocompleteSelection();
+            });
+        });
+    }
+
+    handleAutocompleteKeydown(e) {
+        const items = this.autocompleteDropdown.querySelectorAll('.autocomplete-item');
+        
+        switch (e.key) {
+            case 'ArrowDown':
+                e.preventDefault();
+                this.selectedAutocompleteIndex = Math.min(this.selectedAutocompleteIndex + 1, items.length - 1);
+                this.updateAutocompleteSelection();
+                break;
+                
+            case 'ArrowUp':
+                e.preventDefault();
+                this.selectedAutocompleteIndex = Math.max(this.selectedAutocompleteIndex - 1, -1);
+                this.updateAutocompleteSelection();
+                break;
+                
+            case 'Enter':
+                e.preventDefault();
+                if (this.selectedAutocompleteIndex >= 0 && items[this.selectedAutocompleteIndex]) {
+                    this.selectAutocompleteItem(items[this.selectedAutocompleteIndex].textContent);
+                }
+                break;
+                
+            case 'Escape':
+                this.hideAutocomplete();
+                break;
+        }
+    }
+
+    updateAutocompleteSelection() {
+        const items = this.autocompleteDropdown.querySelectorAll('.autocomplete-item');
+        items.forEach((item, index) => {
+            item.classList.toggle('selected', index === this.selectedAutocompleteIndex);
+        });
+    }
+
+    selectAutocompleteItem(mountainName) {
+        const inputValue = this.mountainsInput.value;
+        const currentMountains = inputValue.split(',').map(name => name.trim());
+        
+        // Replace the last mountain (or add if empty)
+        if (currentMountains.length > 0 && currentMountains[currentMountains.length - 1] === '') {
+            currentMountains.pop();
+        }
+        
+        currentMountains.push(mountainName);
+        
+        this.mountainsInput.value = currentMountains.join(', ');
+        this.hideAutocomplete();
+        this.mountainsInput.focus();
     }
 }
 

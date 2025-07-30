@@ -23,13 +23,13 @@
             </div>
         </div>
         
-        <div class="info-panel" id="info-panel">
-            <button class="close-panel" id="close-panel">×</button>
+        <div id="info-panel" class="info-panel" style="display: none;">
+            <button id="close-panel" class="close-panel">×</button>
             <h3>Mountain Info</h3>
             <div id="mountain-info">
                 <p>Click on mountain pins to view details and manage hikes</p>
-                <p>Double-click (desktop) on empty areas to add new mountains</p>
                 <p>Use the map controls to zoom and pan</p>
+                <p>Submit hikes for others to see by hitting the publish button</p>
             </div>
         </div>
     </div>
@@ -42,8 +42,10 @@
             
             <form id="hike-form">
                 <div class="form-group">
-                    <label for="mountain-name">Mountain Name:</label>
-                    <input type="text" id="mountain-name" required>
+                    <label for="mountains-input">Mountains:</label>
+                    <input type="text" id="mountains-input" required placeholder="Enter mountain names (comma-separated)">
+                    <div id="mountains-autocomplete" class="autocomplete-dropdown"></div>
+                    <small>Enter mountain names separated by commas. Only existing mountains will be included.</small>
                 </div>
                 
                 <div class="form-group">
