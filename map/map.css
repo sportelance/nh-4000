@@ -565,43 +565,91 @@ body {
 
 /* Zoom level responsive styles */
 .map-background[data-zoom="1"] .mountain-pin .label {
-    font-size: 6px;
-    max-width: 12px;
-}
-
-.map-background[data-zoom="2"] .mountain-pin .label {
-    font-size: 8px;
-    max-width: 24px;
-}
-
-.map-background[data-zoom="3"] .mountain-pin .label {
     font-size: 10px;
     max-width: 36px;
 }
 
-.map-background[data-zoom="4"] .mountain-pin .label {
-    font-size: 12px;
-    max-width: 48px;
+.map-background[data-zoom="1"] .mountain-pin .triangle {
+    border-left:7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid currentColor;
 }
 
-.map-background[data-zoom="5"] .mountain-pin .label {
+.map-background[data-zoom="2"] .mountain-pin .label {
     font-size: 14px;
     max-width: 60px;
 }
 
-.map-background[data-zoom="6"] .mountain-pin .label {
+.map-background[data-zoom="2"] .mountain-pin .triangle {
+    border-left: 8px solid transparent;
+    border-right: 8px solid transparent;
+    border-bottom: 14px solid currentColor;
+}
+
+.map-background[data-zoom="3"] .mountain-pin .label {
+    font-size: 12px;
+    max-width: 48px;
+}
+
+.map-background[data-zoom="3"] .mountain-pin .triangle {
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 12px solid currentColor;
+}
+
+.map-background[data-zoom="4"] .mountain-pin .label {
+    font-size: 10px;
+    max-width: 36px;
+}
+
+.map-background[data-zoom="4"] .mountain-pin .triangle {
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid currentColor;
+}
+
+.map-background[data-zoom="5"] .mountain-pin .label {
     font-size: 8px;
-    max-width: 80px;
+    max-width: 24px;
+}
+
+.map-background[data-zoom="5"] .mountain-pin .triangle {
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 8px solid currentColor;
+}
+
+.map-background[data-zoom="6"] .mountain-pin .label {
+    font-size: 7px;
+    max-width: 18px;
+}
+
+.map-background[data-zoom="6"] .mountain-pin .triangle {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 7px solid currentColor;
 }
 
 .map-background[data-zoom="7"] .mountain-pin .label {
-    font-size: 8px;
-    max-width: 40px;
+    font-size: 6px;
+    max-width: 14px;
+}
+
+.map-background[data-zoom="7"] .mountain-pin .triangle {
+    border-left: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 6px solid currentColor;
 }
 
 .map-background[data-zoom="8"] .mountain-pin .label {
-    font-size: 8px;
-    max-width: 20px;
+    font-size: 5px;
+    max-width: 10px;
+}
+
+.map-background[data-zoom="8"] .mountain-pin .triangle {
+    border-left: 2px solid transparent;
+    border-right: 2px solid transparent;
+    border-bottom: 4px solid currentColor;
 } 
 
 .publish-btn {

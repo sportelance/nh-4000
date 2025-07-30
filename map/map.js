@@ -764,12 +764,8 @@ class NH4000Map {
     }
 
     zoomOut() {
-        console.log('zoomOut called - current zoomLevel:', this.zoomLevel);
         this.zoomLevel = Math.max(0.5, this.zoomLevel / 1.2);
-        console.log('zoomOut - new zoomLevel:', this.zoomLevel);
-        console.log('About to call updateTransform...');
         this.updateTransform();
-        console.log('updateTransform called');
     }
 
     resetZoom() {
@@ -844,23 +840,18 @@ class NH4000Map {
     }
 
     updateTransform() {
-        console.log('updateTransform called - mapBackground exists:', !!this.mapBackground);
-        
         if (!this.mapBackground) {
             console.error('mapBackground is null! Cannot apply transform.');
             return;
-        }
-        
-        console.log('updateTransform called - zoomLevel:', this.zoomLevel, 'position:', this.currentPosition);
-        
-        // Temporarily disable transitions to see if that's the issue
-        this.mapBackground.style.transition = 'none';
+        }        
         
         const transform = `translate(${this.currentPosition.x}px, ${this.currentPosition.y}px) scale(${this.zoomLevel})`;
         this.mapBackground.style.transform = transform;
-        
-        console.log('Applied transform:', transform);
-        console.log('Actual style.transform:', this.mapBackground.style.transform);
+
+        // Set the data-zoom attribute for responsive CSS
+        const zoomLevel = Math.round(this.zoomLevel);
+        this.mapBackground.setAttribute('data-zoom', Math.min(8, Math.max(1, zoomLevel)));
+    
         
         // Force a reflow to ensure the transform is applied
         this.mapBackground.offsetHeight;
