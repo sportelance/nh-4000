@@ -149,7 +149,7 @@ body {
 /* Replace the .info-panel class with #info-panel ID */
 #info-panel {
     position: absolute;
-    top: 20px;
+    top: 120px; /* Increased from 20px to make room for hike tracker */
     right: 20px;
     width: 300px;
     background: rgba(255, 255, 255, 0.95);
@@ -693,4 +693,186 @@ body {
     0% { opacity: 1; }
     50% { opacity: 0.7; }
     100% { opacity: 1; }
+} 
+
+#hike-tracker {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 250px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    z-index: 100;
+}
+
+#close-tracker {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #666;
+    cursor: pointer;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+#close-tracker:hover {
+    background: rgba(0, 0, 0, 0.1);
+    color: #333;
+}
+
+.tracker-header h3 {
+    margin: 0 0 10px 0;
+    color: #2c3e50;
+    font-size: 16px;
+    text-align: center;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+    padding-right: 20px; /* Make room for close button */
+}
+
+/* Add hidden state for hike tracker */
+#hike-tracker.hidden {
+    display: none;
+}
+
+.tracker-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.stat-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-divider {
+    color: #999;
+    margin: 0 4px;
+}
+
+.stat-total {
+    color: #666;
+}
+
+.stat-unit {
+    color: #666;
+    font-size: 12px;
+    margin-left: 2px;
+}
+
+#completed-count {
+    color: #27ae60; /* Green color for completed count */
+    font-weight: bold;
+    font-size: 16px;
+}
+
+#total-elevation {
+    color: #e67e22; /* Orange color for total elevation */
+    font-weight: bold;
+    font-size: 16px;
+}
+
+/* Move the info panel down to avoid overlap */
+#info-panel {
+    position: absolute;
+    top: 120px;
+    right: 20px;
+    width: 300px;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    max-height: 400px;
+    overflow-y: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateX(0);
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    #hike-tracker {
+        width: 200px;
+        right: 10px;
+        left: auto;
+        top: 10px;
+        padding: 10px;
+        font-size: 11px;
+    }
+    
+    #info-panel {
+        top: 80px;
+        width: calc(100% - 20px);
+        right: 10px;
+        left: 10px;
+        max-height: 250px;
+        font-size: 12px;
+        padding: 15px;
+    }
+    
+    .tracker-header h3 {
+        font-size: 12px;
+        margin: 0 0 8px 0;
+    }
+    
+    .tracker-stats {
+        gap: 6px;
+    }
+    
+    .stat-item {
+        font-size: 11px;
+    }
+    
+    #completed-count,
+    #total-elevation {
+        font-size: 12px;
+    }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+    #hike-tracker {
+        width: 160px;
+        right: 5px;
+        top: 5px;
+        padding: 8px;
+        font-size: 10px;
+    }
+    
+    #info-panel {
+        top: 70px;
+        right: 5px;
+        left: 5px;
+        width: calc(100% - 10px);
+    }
+    
+    .tracker-header h3 {
+        font-size: 11px;
+    }
+    
+    .stat-item {
+        font-size: 10px;
+    }
+    
+    #completed-count,
+    #total-elevation {
+        font-size: 11px;
+    }
 } 

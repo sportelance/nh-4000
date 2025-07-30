@@ -18,6 +18,8 @@ class NH4000Map {
         this.initializeMap();
         this.setupEventListeners();
         this.initializeInfoPanel();
+        this.initializeHikeTracker(); // Add this line
+        this.fixCorruptedHikesData();
     }
 
     initializeElements() {
@@ -105,6 +107,12 @@ class NH4000Map {
         const closePanelBtn = document.getElementById('close-panel');
         if (closePanelBtn) closePanelBtn.addEventListener('click', () => {
             this.hideInfoPanel();
+        });
+
+        // Hike tracker close functionality
+        const closeTrackerBtn = document.getElementById('close-tracker');
+        if (closeTrackerBtn) closeTrackerBtn.addEventListener('click', () => {
+            this.hideHikeTracker();
         });
 
         // Swipe to dismiss info panel
@@ -249,6 +257,9 @@ class NH4000Map {
             // Now merge with localStorage data to catch any local-only changes
             this.mergeLocalStorageData();
             
+            // Update the hike tracker after loading data
+            this.updateHikeTracker();
+            
         } catch (error) {
             console.error('Error loading data from GitHub:', error);
             
@@ -260,6 +271,7 @@ class NH4000Map {
             
             // Fallback to localStorage if GitHub fails
             this.loadFromLocalStorage();
+            this.updateHikeTracker(); // Add this line
         }
     }
 
@@ -341,6 +353,7 @@ class NH4000Map {
             if (!mountain.hikes) mountain.hikes = [];
             mountain.hikes.push(hike);
             await this.saveMountain(mountain, false); // Don't publish to GitHub immediately
+            this.updateHikeTracker(); // Add this line
         }
     }
 
@@ -375,6 +388,7 @@ class NH4000Map {
         }
         
         this.renderMountains();
+        this.updateHikeTracker(); // Add this line
     }
 
     renderMountains() {
@@ -649,6 +663,7 @@ class NH4000Map {
         
         this.closeModals();
         this.renderMountains();
+        this.updateHikeTracker(); // Add this line
         
         // Reset editing state
         this.editingHikeIndex = null;
@@ -673,6 +688,7 @@ class NH4000Map {
             await this.saveMountain(mountain);
             this.renderMountains();
             this.showMountainDetails(mountain);
+            this.updateHikeTracker(); // Add this line
         }
     }
 
@@ -1035,6 +1051,84 @@ class NH4000Map {
         
         await this.saveMountain(mountain);
         return mountain;
+    }
+
+    calculateHikeStats() {
+        let completedCount = 0;
+        let totalElevation = 0;
+        const completedMountains = new Set();
+        
+        this.mountains.forEach((mountain, id) => {
+            if (mountain.hikes && mountain.hikes.length > 0) {
+                const hasCompletedHike = mountain.hikes.some(hike => hike.completed);
+                if (hasCompletedHike && !completedMountains.has(id)) {
+                    completedCount++;
+                    completedMountains.add(id);
+                    totalElevation += mountain.elevation || 0;
+                }
+            }
+        });
+        
+        return {
+            completedCount,
+            totalElevation
+        };
+    }
+
+    updateHikeTracker() {
+        const stats = this.calculateHikeStats();
+        
+        const completedCountElement = document.getElementById('completed-count');
+        const totalElevationElement = document.getElementById('total-elevation');
+        
+        if (completedCountElement) {
+            completedCountElement.textContent = stats.completedCount;
+        }
+        
+        if (totalElevationElement) {
+            totalElevationElement.textContent = stats.totalElevation.toLocaleString();
+        }
+    }
+
+    hideHikeTracker() {
+        const hikeTracker = document.getElementById('hike-tracker');
+        if (hikeTracker) {
+            hikeTracker.style.display = 'none';
+        }
+        
+        // Save to localStorage that user has dismissed the hike tracker
+        localStorage.setItem('nh4000_tracker_dismissed', 'true');
+    }
+
+    showHikeTracker() {
+        const hikeTracker = document.getElementById('hike-tracker');
+        if (hikeTracker) {
+            hikeTracker.style.display = 'block';
+        }
+    }
+
+    shouldShowHikeTracker() {
+        return localStorage.getItem('nh4000_tracker_dismissed') !== 'true';
+    }
+
+    initializeHikeTracker() {
+        if (this.shouldShowHikeTracker()) {
+            this.showHikeTracker();
+        } else {
+            // If tracker should be hidden, hide it
+            const hikeTracker = document.getElementById('hike-tracker');
+            if (hikeTracker) {
+                hikeTracker.style.display = 'none';
+            }
+        }
+    }
+
+    fixCorruptedHikesData() {
+        // This method is not fully implemented in the provided code,
+        // but it's a placeholder for future functionality.
+        // It would involve iterating through mountains and fixing any
+        // corrupted hike data (e.g., missing 'id', 'date', 'completed' fields).
+        console.warn('fixCorruptedHikesData is a placeholder and not fully implemented.');
     }
 }
 
