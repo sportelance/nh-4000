@@ -723,6 +723,7 @@ body {
     justify-content: center;
     border-radius: 50%;
     transition: all 0.3s ease;
+    z-index: 101; /* Ensure it's above other elements */
 }
 
 #close-tracker:hover {
@@ -817,6 +818,16 @@ body {
         font-size: 11px;
     }
     
+    #close-tracker {
+        top: 5px;
+        right: 5px;
+        width: 28px; /* Larger touch target on mobile */
+        height: 28px;
+        font-size: 20px;
+        background: rgba(255, 255, 255, 0.9); /* More visible background */
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
     #info-panel {
         top: 80px;
         width: calc(100% - 20px);
@@ -830,6 +841,7 @@ body {
     .tracker-header h3 {
         font-size: 12px;
         margin: 0 0 8px 0;
+        padding-right: 25px; /* More room for larger close button */
     }
     
     .tracker-stats {
@@ -856,6 +868,14 @@ body {
         font-size: 10px;
     }
     
+    #close-tracker {
+        top: 3px;
+        right: 3px;
+        width: 30px; /* Even larger touch target */
+        height: 30px;
+        font-size: 22px;
+    }
+    
     #info-panel {
         top: 70px;
         right: 5px;
@@ -865,6 +885,7 @@ body {
     
     .tracker-header h3 {
         font-size: 11px;
+        padding-right: 28px; /* More room for larger close button */
     }
     
     .stat-item {

@@ -1097,7 +1097,7 @@ class NH4000Map {
         }
         
         // Save to localStorage that user has dismissed the hike tracker
-        localStorage.setItem('nh4000_tracker_dismissed', 'true');
+        sessionStorage.setItem('nh4000_tracker_dismissed', 'true');
     }
 
     showHikeTracker() {
@@ -1108,7 +1108,7 @@ class NH4000Map {
     }
 
     shouldShowHikeTracker() {
-        return localStorage.getItem('nh4000_tracker_dismissed') !== 'true';
+        return sessionStorage.getItem('nh4000_tracker_dismissed') !== 'true';
     }
 
     initializeHikeTracker() {
