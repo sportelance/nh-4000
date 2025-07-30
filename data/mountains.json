@@ -87,7 +87,16 @@
     "y": 77.03055555555555,
     "elevation": 4802,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753912702431",
+        "mountainId": "mt-moosilauke",
+        "date": "2024-06-02",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-eisenhower",
@@ -204,7 +213,16 @@
     "y": 62.793719806763285,
     "elevation": 4358,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753912839441",
+        "mountainId": "mt-south-kinsman",
+        "date": "2025-07-26",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-field",
@@ -258,7 +276,16 @@
     "y": 60.21086956521739,
     "elevation": 4293,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753913335367",
+        "mountainId": "mt-north-kinsman",
+        "date": "2025-07-26",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-willey",
@@ -330,7 +357,24 @@
     "y": 57.94685990338164,
     "elevation": 4100,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753913352934",
+        "mountainId": "mt-cannon",
+        "date": "2025-07-26",
+        "companions": "Sam, Rich, Tom",
+        "notes": "",
+        "completed": true
+      },
+      {
+        "id": "hike-1753913403424",
+        "mountainId": "mt-cannon",
+        "date": "2023-09-03",
+        "companions": "Sam, Kat",
+        "notes": "",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-hale",
@@ -430,5 +474,17 @@
     "elevation": 4003,
     "is_custom": false,
     "hikes": []
-  }
+  },
+  [
+    "mt-washington",
+    {
+      "id": "mt-washington",
+      "name": "Washington",
+      "x": 71.22063104453298,
+      "y": 41.0274154589372,
+      "elevation": 6288,
+      "is_custom": false,
+      "hikes": []
+    }
+  ]
 ]
