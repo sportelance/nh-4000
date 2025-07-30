@@ -230,9 +230,6 @@ class NH4000Map {
             // Load mountains from GitHub
             const mountainsData = await this.githubStorage.readMountains();
             
-            // Load hikes from GitHub
-            const hikesData = await this.githubStorage.readHikes();
-            
             // Process mountains data from GitHub
             this.mountains.clear();
             if (mountainsData) {
@@ -244,25 +241,8 @@ class NH4000Map {
                         y: parseFloat(mountain.y),
                         elevation: mountain.elevation,
                         is_custom: mountain.is_custom,
-                        hikes: []
+                        hikes: mountain.hikes || []
                     });
-                });
-            }
-            
-            // Process hikes data from GitHub and associate with mountains
-            if (hikesData) {
-                hikesData.forEach(hike => {
-                    const mountain = this.mountains.get(hike.mountain_id);
-                    if (mountain) {
-                        mountain.hikes.push({
-                            id: hike.id,
-                            mountainId: hike.mountain_id,
-                            date: hike.hike_date,
-                            companions: hike.companions,
-                            notes: hike.notes,
-                            completed: hike.completed
-                        });
-                    }
                 });
             }
             
@@ -289,8 +269,8 @@ class NH4000Map {
             const localMountainsData = localStorage.getItem('nh4000_mountains');
             if (localMountainsData) {
                 const localMountains = JSON.parse(localMountainsData);
-                localMountains.forEach(([id, localMountain]) => {
-                    const existingMountain = this.mountains.get(id);
+                localMountains.forEach(localMountain => {
+                    const existingMountain = this.mountains.get(localMountain.id);
                     
                     if (existingMountain) {
                         // Mountain exists in both GitHub and localStorage
@@ -311,36 +291,13 @@ class NH4000Map {
                         }
                     } else {
                         // Mountain only exists in localStorage (was added locally but failed to sync to GitHub)
-                        this.mountains.set(id, localMountain);
+                        this.mountains.set(localMountain.id, localMountain);
                     }
                 });
+            } else {
+                localStorage.setItem('nh4000_mountains', JSON.stringify(Array.from(this.mountains.values())));
             }
-            
-            // Load hikes from localStorage as additional backup
-            const localHikesData = localStorage.getItem('nh4000_hikes');
-            if (localHikesData) {
-                const localHikes = JSON.parse(localHikesData);
-                localHikes.forEach(localHike => {
-                    const mountain = this.mountains.get(localHike.mountainId);
-                    if (mountain) {
-                        if (!mountain.hikes) mountain.hikes = [];
-                        
-                        // Check if this hike already exists
-                        const existingHike = mountain.hikes.find(h => h.id === localHike.id);
-                        if (!existingHike) {
-                            // Add hike from localStorage if it doesn't exist in memory
-                            mountain.hikes.push({
-                                id: localHike.id,
-                                mountainId: localHike.mountainId,
-                                date: localHike.date,
-                                companions: localHike.companions,
-                                notes: localHike.notes,
-                                completed: localHike.completed
-                            });
-                        }
-                    }
-                });
-            }
+
         } catch (error) {
             console.error('Error merging localStorage data:', error);
         }
@@ -348,23 +305,12 @@ class NH4000Map {
 
     loadFromLocalStorage() {
         const mountainsData = localStorage.getItem('nh4000_mountains');
-        const hikesData = localStorage.getItem('nh4000_hikes');
         
         if (mountainsData) {
             const mountains = JSON.parse(mountainsData);
             this.mountains.clear();
-            mountains.forEach(([id, mountain]) => {
-                this.mountains.set(id, mountain);
-            });
-        }
-        
-        if (hikesData) {
-            const hikes = JSON.parse(hikesData);
-            hikes.forEach(hike => {
-                const mountain = this.mountains.get(hike.mountainId);
-                if (mountain) {
-                    mountain.hikes.push(hike);
-                }
+            mountains.forEach(mountain => {
+                this.mountains.set(mountain.id, mountain);
             });
         }
     }
@@ -400,27 +346,9 @@ class NH4000Map {
 
     saveToLocalStorage() {
         try {
-            // Save mountains to localStorage
-            const mountainsData = Array.from(this.mountains.entries());
+            // Save mountains to localStorage - use values() to match GitHub format
+            const mountainsData = Array.from(this.mountains.values());
             localStorage.setItem('nh4000_mountains', JSON.stringify(mountainsData));
-            
-            // Save hikes to localStorage
-            const allHikes = [];
-            this.mountains.forEach(mountain => {
-                if (mountain.hikes) {
-                    mountain.hikes.forEach(hike => {
-                        allHikes.push({
-                            id: hike.id,
-                            mountainId: hike.mountainId,
-                            date: hike.date,
-                            companions: hike.companions,
-                            notes: hike.notes,
-                            completed: hike.completed
-                        });
-                    });
-                }
-            });
-            localStorage.setItem('nh4000_hikes', JSON.stringify(allHikes));
         } catch (error) {
             console.error('Failed to save to localStorage:', error);
         }
@@ -572,6 +500,8 @@ class NH4000Map {
 
     showMountainDetails(mountain) {
         this.currentMountain = mountain;
+        this.renderHikeList(mountain);
+
         
         const modal = document.getElementById('details-modal');
         const title = document.getElementById('details-title');
@@ -579,12 +509,12 @@ class NH4000Map {
         
         title.textContent = `${mountain.name} (${mountain.elevation})`;
         
-        this.renderHikeList(mountain);
         
         modal.style.display = 'block';
     }
 
     renderHikeList(mountain) {
+        console.log('renderHikeList called with mountain:', mountain);
         const hikeList = document.getElementById('hike-list');
         
         if (!mountain.hikes || mountain.hikes.length === 0) {
@@ -1047,7 +977,6 @@ class NH4000Map {
         try {
             // Publish all mountains and hikes to GitHub
             await this.githubStorage.writeMountains(Array.from(this.mountains?.values() || []));
-            await this.githubStorage.writeHikes(Array.from(this.hikes?.values() || []));
             
             // Show success state
             this.publishBtn.classList.remove('publishing');

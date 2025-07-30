@@ -96,16 +96,7 @@
     "y": 45.856280193236714,
     "elevation": 4760,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753909667729",
-        "mountainId": "mt-eisenhower",
-        "date": "",
-        "companions": "",
-        "notes": "",
-        "completed": true
-      }
-    ]
+    "hikes": []
   },
   {
     "id": "mt-north-twin",

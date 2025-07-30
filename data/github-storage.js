@@ -119,16 +119,6 @@ class GitHubStorage {
         return await this.writeFile('data/mountains.json', mountains, 'Update mountains data');
     }
 
-    // Read hikes data
-    async readHikes() {
-        return await this.readFile('data/hikes.json');
-    }
-
-    // Write hikes data
-    async writeHikes(hikes) {
-        return await this.writeFile('data/hikes.json', hikes, 'Update hikes data');
-    }
-
     // Delete a file
     async deleteFile(path, message = 'Delete file') {
         try {
