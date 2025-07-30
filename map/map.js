@@ -916,7 +916,7 @@ class NH4000Map {
 
     setupSwipeToDismiss() {
         const infoPanel = document.getElementById('info-panel');
-        if (!infoPanel) return;
+        if (!infoPanel || infoPanel.style.display === 'none') return;
         
         let startX = 0;
         let startY = 0;
