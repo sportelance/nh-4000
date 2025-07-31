@@ -565,7 +565,16 @@
     "y": 87.25217391304348,
     "elevation": 4043,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753999339607",
+        "mountainId": "mt-passaconaway",
+        "date": "2025-05-17",
+        "companions": "To, TC, Rich, Sam",
+        "notes": "slick as a cat's ass",
+        "completed": false
+      }
+    ]
   },
   {
     "id": "mt-owl-head",
@@ -592,7 +601,16 @@
     "y": 90.43599033816425,
     "elevation": 4020,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753999347046",
+        "mountainId": "mt-whiteface",
+        "date": "2025-05-17",
+        "companions": "To, TC, Rich, Sam",
+        "notes": "slick as a cat's ass",
+        "completed": true
+      }
+    ]
   },
   {
     "id": "mt-waumbek",
@@ -630,25 +648,9 @@
     "is_custom": false,
     "hikes": []
   },
-  [
-    "mt-washington",
-    {
-      "id": "mt-washington",
-      "name": "Washington",
-      "x": 71.22063104453298,
-      "y": 41.0274154589372,
-      "elevation": 6288,
-      "is_custom": false,
-      "hikes": [
-        {
-          "id": "hike-1753756614065",
-          "mountainId": "mt-washington",
-          "date": "",
-          "companions": "",
-          "notes": "",
-          "completed": true
-        }
-      ]
-    }
-  ]
+  {
+    "x": null,
+    "y": null,
+    "hikes": []
+  }
 ]
