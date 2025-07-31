@@ -114,7 +114,11 @@ class NH4000Map {
         if (closeTrackerBtn) closeTrackerBtn.addEventListener('click', () => {
             this.hideHikeTracker();
         });
-}
+
+        // Setup swipe-to-dismiss for both panels
+        this.setupSwipeToDismiss('info-panel', () => this.hideInfoPanel());
+        this.setupSwipeToDismiss('hike-tracker', () => this.hideHikeTracker());
+    }
 
     setupTouchHandling() {
         if (!this.mapWrapper) return;
@@ -911,21 +915,25 @@ class NH4000Map {
         }
     }
 
-    setupSwipeToDismiss() {
-        const infoPanel = document.getElementById('info-panel');
-        if (!infoPanel || infoPanel.style.display === 'none') return;
+    // Add this reusable swipe-to-dismiss function
+    setupSwipeToDismiss(elementId, dismissCallback) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
         
         let startX = 0;
         let startY = 0;
         let isSwiping = false;
 
-        infoPanel.addEventListener('touchstart', (e) => {
+        element.addEventListener('touchstart', (e) => {
+            if (element.style.display === 'none') return;
+            
             startX = e.touches[0].clientX;
             startY = e.touches[0].clientY;
             isSwiping = false;
         });
 
-        infoPanel.addEventListener('touchmove', (e) => {
+        element.addEventListener('touchmove', (e) => {
+            if (element.style.display === 'none') return;
             if (!startX || !startY) return;
 
             const deltaX = e.touches[0].clientX - startX;
@@ -942,28 +950,38 @@ class NH4000Map {
                 const opacity = 1 - (swipeDistance / maxSwipe);
                 const translateX = Math.min(swipeDistance, maxSwipe);
                 
-                infoPanel.style.transform = `translateX(${translateX}px)`;
-                infoPanel.style.opacity = opacity;
+                element.style.transform = `translateX(${translateX}px)`;
+                element.style.opacity = opacity;
             }
         });
 
-        infoPanel.addEventListener('touchend', (e) => {
+        element.addEventListener('touchend', (e) => {
+            if (element.style.display === 'none') return;
             if (!isSwiping) return;
 
             const deltaX = e.changedTouches[0].clientX - startX;
             
-            // If swiped more than 50px to the right, dismiss the panel
+            // If swiped more than 50px to the right, dismiss the element
             if (deltaX > 50) {
-                this.hideInfoPanel();
+                dismissCallback();
             } else {
                 // Reset position
-                infoPanel.style.transform = '';
-                infoPanel.style.opacity = '';
+                element.style.transform = '';
+                element.style.opacity = '';
             }
             
             startX = 0;
             startY = 0;
             isSwiping = false;
+        });
+
+        // Reset on touch cancel
+        element.addEventListener('touchcancel', () => {
+            startX = 0;
+            startY = 0;
+            isSwiping = false;
+            element.style.transform = '';
+            element.style.opacity = '';
         });
     }
 
