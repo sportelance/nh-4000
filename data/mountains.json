@@ -368,16 +368,7 @@
     "y": 80.84746376811594,
     "elevation": 4340,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753916350146",
-        "mountainId": "mt-osceola",
-        "date": "2025-05-17",
-        "companions": "Sam, Tom, T.C., Rich",
-        "notes": "",
-        "completed": true
-      }
-    ]
+    "hikes": []
   },
   {
     "id": "mt-flume",
@@ -485,16 +476,7 @@
     "y": 79.16376811594202,
     "elevation": 4156,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753916364266",
-        "mountainId": "mt-east-osceola",
-        "date": "2025-05-17",
-        "companions": "Sam, Tom, T.C., Rich",
-        "notes": "Too slick for Dicky",
-        "completed": false
-      }
-    ]
+    "hikes": []
   },
   {
     "id": "mt-middle-tripyramid",
@@ -646,15 +628,27 @@
     "y": 85.52572463768117,
     "elevation": 4003,
     "is_custom": false,
-    "hikes": [
-      {
-        "id": "hike-1753916343010",
-        "mountainId": "mt-tecumseh",
-        "date": "2025-05-17",
-        "companions": "Sam, Tom, T.C., Rich",
-        "notes": "",
-        "completed": true
-      }
-    ]
-  }
+    "hikes": []
+  },
+  [
+    "mt-washington",
+    {
+      "id": "mt-washington",
+      "name": "Washington",
+      "x": 71.22063104453298,
+      "y": 41.0274154589372,
+      "elevation": 6288,
+      "is_custom": false,
+      "hikes": [
+        {
+          "id": "hike-1753756614065",
+          "mountainId": "mt-washington",
+          "date": "",
+          "companions": "",
+          "notes": "",
+          "completed": true
+        }
+      ]
+    }
+  ]
 ]
