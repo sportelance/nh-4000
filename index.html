@@ -109,8 +109,27 @@
     <script type="module">
         // This will be used later to load stats from localStorage or database
         function updateStats() {
-            const hikes = JSON.parse(localStorage.getItem('nh4000_hikes') || '[]');
-            const completed = hikes.filter(hike => hike.completed).length;
+            const mountainsData = localStorage.getItem('nh4000_mountains');
+            if (!mountainsData) {
+                document.getElementById('completed-hikes').textContent = '0';
+                document.getElementById('pending-hikes').textContent = '48';
+                return;
+            }
+            
+            const mountains = JSON.parse(mountainsData);
+            const completedMountains = new Set();
+            
+            // Count unique mountains with completed hikes
+            mountains.forEach(mountain => {
+                if (mountain.hikes && mountain.hikes.length > 0) {
+                    const hasCompletedHike = mountain.hikes.some(hike => hike.completed);
+                    if (hasCompletedHike) {
+                        completedMountains.add(mountain.id);
+                    }
+                }
+            });
+            
+            const completed = completedMountains.size;
             const total = 48; // NH has 48 4000 footers
             
             document.getElementById('completed-hikes').textContent = completed;
