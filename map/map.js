@@ -114,10 +114,7 @@ class NH4000Map {
         if (closeTrackerBtn) closeTrackerBtn.addEventListener('click', () => {
             this.hideHikeTracker();
         });
-
-        // Swipe to dismiss info panel
-        this.setupSwipeToDismiss();
-    }
+}
 
     setupTouchHandling() {
         if (!this.mapWrapper) return;
