@@ -476,7 +476,16 @@
     "y": 79.16376811594202,
     "elevation": 4156,
     "is_custom": false,
-    "hikes": []
+    "hikes": [
+      {
+        "id": "hike-1753916364266",
+        "mountainId": "mt-east-osceola",
+        "date": "2025-05-17",
+        "companions": "Sam, Tom, T.C., Rich",
+        "notes": "Too slick for Dicky",
+        "completed": false
+      }
+    ]
   },
   {
     "id": "mt-middle-tripyramid",
